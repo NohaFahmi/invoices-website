@@ -1,0 +1,95 @@
+.with-icon {
+  width: 150px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  padding: 8px 15px 8px 8px;
+}
+.btn-default {
+  background-color: var(--btn-default-bg) !important;
+  border-radius: 24px;
+  height: 48px;
+  width: fit-content;
+  min-width: 130px;
+  font-size: 12px;
+  font-weight: bold;
+  color: #fff;
+  border: none;
+  padding: 17px 23px 16px 24px;
+}
+.btn-default:hover {
+  background-color: var(--btn-default-hover) !important;
+  color: #fff;
+}
+.btn-grey {
+  width: 73px;
+  height: 48px;
+  font-size: 12px;
+  font-weight: bold;
+  border-radius: 24px;
+  background-color: var(--btn-grey-bg) !important;
+  color: var(--btn-grey-color);
+  border: none;
+}
+.btn-grey:hover {
+  background-color: var(--btn-grey-hover) !important;
+  color: var(--btn-grey-color);
+}
+.ant-btn .anticon svg {
+  width: 15px;
+  height: 15px;
+  fill: #7c5dfa;
+}
+.ant-btn .anticon {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #fff;
+  border-radius: 50%;
+}
+.btn-wide {
+  width: 100%;
+  height: 48px;
+  background-color: #f9fafe;
+  color: #7e88c3;
+  font-size: 12px;
+  font-weight: bold;
+  border-radius: 24px;
+  border: none;
+}
+.btn-wide:hover {
+  background-color: #dfe3fa;
+  color: #7e88c3;
+}
+.btn-dark {
+  font-size: 12px;
+  font-weight: bold;
+  width: 133px;
+  height: 48px;
+  border-radius: 24px;
+  background-color: var(--btn-dark-bg);
+  color: var(--btn-dark-color);
+  border: none;
+}
+.btn-dark:hover {
+  color: var(--btn-dark-color);
+  background-color: var(--btn-dark-hover);
+}
+.btn-danger {
+  font-size: 12px;
+  font-weight: bold;
+  width: 90px;
+  height: 48px;
+  padding: 17px 24px 16px;
+  border-radius: 24px;
+  border: none;
+  background-color: var(--btn-danger-bg);
+  color: #fff;
+}
+.btn-danger:hover {
+  background-color: var(--btn-danger-hover);
+  color: #fff;
+}
