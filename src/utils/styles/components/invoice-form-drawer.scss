@@ -1,0 +1,101 @@
+.drawer-container {
+  .ant-drawer-content-wrapper {
+    border: 1px solid red;
+    width: 620px !important;
+    @media (max-width: 620px) {
+      width: 100% !important;
+    }
+  }
+  .ant-drawer-header {
+    border-bottom: none;
+    .ant-drawer-title {
+      font-size: 24px;
+      font-weight: bold;
+      color: var(--from-main-title-color);
+    }
+  }
+  .form-title {
+    color: var(--form-title-color);
+    font-size: 12px;
+    font-weight: bold;
+  }
+  .form-subtitle {
+    color: var(--form-list-title-color);
+    font-size: 18px;
+    font-weight: bold;
+  }
+  .ant-form-item-label {
+    color: var(--form-input-label-color);
+    font-size: 12px;
+    font-weight: 500;
+  }
+  .ant-input {
+    background-color: var(--form-input-bg);
+  }
+  .ant-input:active,
+  .ant-input:focus,
+  .ant-input:hover {
+    color: var(--form-input-color);
+  }
+  .input-group {
+    .ant-form-item-control-input-content {
+      display: flex;
+      flex-direction: row;
+      gap: 24px;
+    }
+    .date-input {
+      width: 100%;
+    }
+    .payment-input {
+      width: 100%;
+    }
+    .payment-selection,
+    .ant-select-selector {
+      height: 48px !important;
+      .ant-select-selection-item {
+        line-height: 48px !important;
+      }
+    }
+  }
+  .ant-space {
+    gap: 16px !important;
+  }
+  .ant-space-item {
+    width: 50px;
+    &:first-of-type {
+      width: 200px;
+    }
+    &:nth-of-type(3),
+    &:nth-of-type(4) {
+      width: 100px;
+    }
+    svg {
+      width: 20px;
+      height: 20px;
+    }
+  }
+  .ant-input-number-input {
+    height: 48px !important;
+  }
+  .btn-wide {
+    span {
+      line-height: 4 !important;
+    }
+  }
+  .form-actions {
+    display: flex;
+    justify-content: flex-end;
+    .btn-grey {
+      width: 96px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .ant-form-item-control-input-content {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+  }
+}

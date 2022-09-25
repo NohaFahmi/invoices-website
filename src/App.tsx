@@ -3,6 +3,7 @@ import "./App.css";
 import { ThemeSwitcherProvider } from "react-css-theme-switcher";
 import Header from "./components/header";
 import AppContainer from "./components/appContainer";
+import InvoiceFormDrawer from "./components/invoiceFormDrawer";
 
 const themes = {
   light: "./assets/theme.scss",
@@ -12,7 +13,7 @@ const themes = {
 function App() {
   return (
     <ThemeSwitcherProvider defaultTheme="light" themeMap={themes}>
-      <AppContainer></AppContainer>
+      <AppContainer/>
     </ThemeSwitcherProvider>
   );
 }

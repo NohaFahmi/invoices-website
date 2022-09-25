@@ -32,6 +32,10 @@
   --date-picker-color: #dfe3fa;
   --date-picker-boxshadow: rgba(0, 0, 0, 0.25);
   --header-bg: #1e2139;
+  --layout-bg: #141625;
+  --form-main-title-color: #0c0e16;
+  --form-title-color: #7c5dfa;
+  -form-list-title-color: #777f98;
 }
 [data-theme="light"] {
   --btn-default-bg: #7c5dfa;
@@ -53,5 +57,8 @@
   --date-picker-color: #0c0e16;
   --date-picker-boxshadow: rgba(72, 84, 159, 0.25);
   --header-bg: #373b53;
-
+  --layout-bg: #f8f8fb;
+  --form-main-title-color: #fff;
+  --form-title-color: #7c5dfa;
+  -form-list-title-color: #777f98;
 }

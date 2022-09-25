@@ -1,0 +1,15 @@
+.main-layout {
+  background-color: var(--layout-bg);
+  height: 100vh;
+}
+.main-side {
+  background-color: var(--layout-bg) !important;
+  height: 100vh !important;
+  width: 100px !important;
+  min-width: 100px !important;
+  max-width: 100px !important;
+  @media(max-width: 768px) {
+    height: 80px !important;
+    width: 100% !important;
+  }
+}
