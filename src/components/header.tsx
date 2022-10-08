@@ -1,29 +1,18 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useThemeSwitcher } from "react-css-theme-switcher";
 import "../utils/styles/components/header.scss";
 import { Button } from "antd";
 import { BsFillSunFill, BsFillMoonFill } from "react-icons/bs";
+import { ThemeContext, IThemeContext } from "../context/ThemeContext";
 
 const Header = () => {
+  const { theme, dispatchThemeEvent } = useContext<IThemeContext>(ThemeContext);
   const toggleDarkMode = () => {
-    setIsDarkMode((previous) => {
-      switcher({ theme: previous ? themes.light : themes.dark });
-      localStorage.setItem("theme", previous ? themes.light : themes.dark);
-      return !previous;
+    dispatchThemeEvent({
+      type: "TOGGLE_THEME",
+      payload: theme === "dark" ? "light" : "dark",
     });
   };
-  const { switcher, themes, currentTheme, status } = useThemeSwitcher();
-  const [isDarkMode, setIsDarkMode] = useState(false);
-  useEffect(() => {
-    let currTheme = localStorage.getItem("theme");
-    if (currTheme) {
-      switcher({ theme: currTheme });
-      localStorage.setItem("theme", currTheme);
-      console.log(currTheme, currentTheme, status);
-    } else {
-      toggleDarkMode();
-    }
-  }, []);
   return (
     <div className="header-container">
       <div className="logo-wrapper">
@@ -34,7 +23,7 @@ const Header = () => {
       </div>
       <div className="header-lower-section">
         <Button type="text" onClick={toggleDarkMode} className="theme-btn">
-          {isDarkMode ? (
+          {theme === "dark" ? (
             <BsFillSunFill fill="#7e88c3" size="30px" />
           ) : (
             <BsFillMoonFill fill="#7e88c3" size="30px" />

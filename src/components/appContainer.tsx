@@ -2,7 +2,9 @@ import { Button, Drawer, Layout } from "antd";
 import Header from "./header";
 import "../utils/styles/components/app-container.scss";
 import InvoiceFormDrawer from "./invoiceFormDrawer";
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+import { ThemeContext } from "../context/ThemeContext";
+import { useEffect } from "react";
 
 const AppContainer = () => {
   const { Sider, Content } = Layout;

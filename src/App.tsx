@@ -1,20 +1,20 @@
 import React from "react";
 import "./App.css";
-import { ThemeSwitcherProvider } from "react-css-theme-switcher";
 import Header from "./components/header";
 import AppContainer from "./components/appContainer";
 import InvoiceFormDrawer from "./components/invoiceFormDrawer";
-
-const themes = {
-  light: "./assets/theme.scss",
-  dark: "./assets/theme.scss",
-};
+import { ThemeContextProvider, switchDataTheme } from "./context/ThemeContext";
+import { useEffect } from "react";
 
 function App() {
+  useEffect(() => {
+    document.title = "Invoice App";
+    switchDataTheme();
+  });
   return (
-    <ThemeSwitcherProvider defaultTheme="light" themeMap={themes}>
-      <AppContainer/>
-    </ThemeSwitcherProvider>
+    <ThemeContextProvider>
+      <AppContainer />
+    </ThemeContextProvider>
   );
 }
 
