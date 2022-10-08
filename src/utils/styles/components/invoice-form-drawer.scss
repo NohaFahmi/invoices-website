@@ -1,17 +1,20 @@
 .drawer-container {
   .ant-drawer-content-wrapper {
-    border: 1px solid red;
     width: 620px !important;
+    background-color: var(--layout-bg);
     @media (max-width: 620px) {
       width: 100% !important;
     }
+  }
+  .ant-drawer-content {
+    background-color: var(--layout-bg) !important;
   }
   .ant-drawer-header {
     border-bottom: none;
     .ant-drawer-title {
       font-size: 24px;
       font-weight: bold;
-      color: var(--from-main-title-color);
+      color: var(--form-main-title-color) !important;
     }
   }
   .form-title {

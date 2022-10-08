@@ -10,17 +10,26 @@ const AppContainer = () => {
   const { Sider, Content } = Layout;
   const [open, setOpen] = useState(false);
   const openMenu = () => {
-    console.log(open);
-    setOpen(true);
+    setOpen(!open);
   };
   return (
     <Layout>
       <Sider className="main-side">
         <Header />
       </Sider>
+      <div className="responsive-header">
+        <Header />
+      </div>
       <Layout className="main-layout">
-        <button onClick={openMenu}>OPEN</button>
-        <InvoiceFormDrawer showDrawer={open} />
+        {/* <button onClick={openMenu}>OPEN</button> */}
+        {open && (
+          <InvoiceFormDrawer
+            showDrawer={true}
+            hideDrawer={() => {
+              setOpen(false);
+            }}
+          />
+        )}
       </Layout>
     </Layout>
   );

@@ -1,12 +1,16 @@
 import { Drawer } from "antd";
-import { useState } from "react";
 import InvoiceForm from "./invoiceForm";
 import "../utils/styles/components/invoice-form-drawer.scss";
 
-const InvoiceFormDrawer = ({ showDrawer }: { showDrawer: boolean }) => {
-  const [open, setOpen] = useState(showDrawer);
+const InvoiceFormDrawer = ({
+  showDrawer,
+  hideDrawer,
+}: {
+  showDrawer: boolean;
+  hideDrawer: () => void;
+}) => {
   const onClose = () => {
-    setOpen(false);
+    hideDrawer();
   };
 
   return (
@@ -15,7 +19,7 @@ const InvoiceFormDrawer = ({ showDrawer }: { showDrawer: boolean }) => {
       placement="left"
       closable={false}
       onClose={onClose}
-      visible={open}
+      visible={showDrawer}
       className="drawer-container"
     >
       <InvoiceForm />

@@ -1,5 +1,4 @@
-import { useState, useEffect, useContext } from "react";
-import { useThemeSwitcher } from "react-css-theme-switcher";
+import { useContext } from "react";
 import "../utils/styles/components/header.scss";
 import { Button } from "antd";
 import { BsFillSunFill, BsFillMoonFill } from "react-icons/bs";

@@ -8,8 +8,14 @@
   width: 100px !important;
   min-width: 100px !important;
   max-width: 100px !important;
-  @media(max-width: 768px) {
+  @media (max-width: 768px) {
     height: 80px !important;
     width: 100% !important;
+    display: none;
+  }
+}
+.responsive-header {
+  @media (min-width: 769px) {
+    display: none;
   }
 }
