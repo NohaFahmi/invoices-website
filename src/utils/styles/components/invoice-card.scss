@@ -1,0 +1,65 @@
+.invoice-card-container {
+  display: flex;
+  align-items: baseline;
+  background-color: var(--invoice-card-bg);
+  justify-content: space-between;
+  max-width: 730px;
+  min-width: 100%;
+  padding: 17px 24px 17px 32px;
+  border-radius: 8px;
+  box-shadow: 0 10px 10px -10px rgba(72, 84, 159, 0.1);
+  font-size: 12px;
+  cursor: pointer;
+  &:hover {
+    border: solid 1px #7c5dfa;
+  }
+  &.selected {
+    border: solid 1px #7c5dfa;
+  }
+  &__id {
+    color: var(--invoice-card-id-color);
+    font-weight: bold;
+    span {
+      color: var(--invoice-card-id-hash-color);
+    }
+  }
+  &__name {
+    color: var(--invoice-card-name);
+  }
+  &__duedate {
+    color: var(--invoice-card-date);
+    span {
+      color: var(--invoice-card-date-span);
+      margin-left: 5px;
+    }
+  }
+  &__amount {
+    color: var(--invoice-card-amount);
+    font-size: 16px;
+    font-weight: bold;
+  }
+  &__status {
+    border-radius: 6px;
+    padding: 13px 17px 12px 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    &.status-1 {
+      color: var(--invoice-card-status-draft-color);
+      background-color: var(--invoice-card-status-draft-bg);
+    }
+    &.status-2 {
+      color: var(--invoice-card-status-pending-color);
+      background-color: var(--invoice-card-status-pending-bg);
+    }
+    &.status-3 {
+      color: var(--invoice-card-status-paid-color);
+      background-color: var(--invoice-card-status-paid-bg);
+    }
+  }
+  &__cta-btn {
+    fill: #7c5dfa;
+    font-size: 12px;
+  }
+}

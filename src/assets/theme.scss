@@ -35,7 +35,22 @@
   --layout-bg: #141625;
   --form-main-title-color: #fff;
   --form-title-color: #7c5dfa;
-  -form-list-title-color: #777f98;
+  --form-list-title-color: #777f98;
+  --invoice-card-id-color: #fff;
+  --invoice-card-id-hash-color: #888eb0;
+  --invoice-card-bg: #1e2139;
+  --invoice-card-date: #dfe3fa;
+  --invoice-card-date-span: #dfe3fa;
+  --invoice-card-name: #fff;
+  --invoice-card-amount: #fff;
+  --invoice-card-status-pending-color: #ff8f00;
+  --invoice-card-status-pending-bg: rgb(255, 143, 0, 0.06);
+  --invoice-card-status-paid-bg: rgb(51, 214, 159, 0.06);
+  --invoice-card-status-paid-color: #33d69f;
+  --invoice-card-status-draft-bg: rgb(223, 227, 250, 0.06);
+  --invoice-card-status-draft-color: #dfe3fa;
+  --invoices-list-page-title-color: #fff;
+  --invoices-list-page-subtitle-color: #dfe3fa;
 }
 [data-theme="light"] {
   --btn-default-bg: #7c5dfa;
@@ -61,4 +76,19 @@
   --form-main-title-color: #0c0e16;
   --form-title-color: #7c5dfa;
   --form-list-title-color: #777f98;
+  --invoice-card-id-color: #0c0e16;
+  --invoice-card-id-hash-color: #7e88c3;
+  --invoice-card-bg: #fff;
+  --invoice-card-date: #888eb0;
+  --invoice-card-date-span: #7e88c3;
+  --invoice-card-name: #858bb2;
+  --invoice-card-amount: #0c0e16;
+  --invoice-card-status-draft-bg: rgb(55, 59, 83, 0.06);
+  --invoice-card-status-draft-color: #373b53;
+  --invoice-card-status-pending-color: #ff8f00;
+  --invoice-card-status-pending-bg: rgb(255, 143, 0, 0.06);
+  --invoice-card-status-paid-bg: rgb(51, 214, 159, 0.06);
+  --invoice-card-status-paid-color: #33d69f;
+  --invoices-list-page-title-color: #0c0e16;
+  --invoices-list-page-subtitle-color: #888eb0;
 }

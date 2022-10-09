@@ -5,6 +5,7 @@ import InvoiceFormDrawer from "./invoiceFormDrawer";
 import React, { useState, useContext } from "react";
 import { ThemeContext } from "../context/ThemeContext";
 import { useEffect } from "react";
+import InvoicesListPage from "../pages/invoicesListPage";
 
 const AppContainer = () => {
   const { Sider, Content } = Layout;
@@ -17,10 +18,10 @@ const AppContainer = () => {
       <Sider className="main-side">
         <Header />
       </Sider>
-      <div className="responsive-header">
-        <Header />
-      </div>
       <Layout className="main-layout">
+        <div className="responsive-header">
+          <Header />
+        </div>
         {/* <button onClick={openMenu}>OPEN</button> */}
         {open && (
           <InvoiceFormDrawer
@@ -30,6 +31,7 @@ const AppContainer = () => {
             }}
           />
         )}
+        <InvoicesListPage />
       </Layout>
     </Layout>
   );
