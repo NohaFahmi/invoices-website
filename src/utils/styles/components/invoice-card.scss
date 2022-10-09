@@ -9,7 +9,12 @@
   border-radius: 8px;
   box-shadow: 0 10px 10px -10px rgba(72, 84, 159, 0.1);
   font-size: 12px;
+  flex-wrap: wrap;
   cursor: pointer;
+  @media (max-width: 768px) {
+    align-items: center;
+    gap: 24px;
+  }
   &:hover {
     border: solid 1px #7c5dfa;
   }
@@ -19,15 +24,19 @@
   &__id {
     color: var(--invoice-card-id-color);
     font-weight: bold;
+    margin-bottom: 0;
     span {
       color: var(--invoice-card-id-hash-color);
     }
   }
   &__name {
     color: var(--invoice-card-name);
+    margin-bottom: 0;
   }
   &__duedate {
     color: var(--invoice-card-date);
+    margin-bottom: 0;
+
     span {
       color: var(--invoice-card-date-span);
       margin-left: 5px;
@@ -35,6 +44,8 @@
   }
   &__amount {
     color: var(--invoice-card-amount);
+    margin-bottom: 0;
+
     font-size: 16px;
     font-weight: bold;
   }
@@ -58,8 +69,20 @@
       background-color: var(--invoice-card-status-paid-bg);
     }
   }
+  &__mid-part {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 40px;
+    @media (max-width: 768px) {
+      flex-direction: column;
+      gap: 8px;
+    }
+  }
   &__cta-btn {
     fill: #7c5dfa;
     font-size: 12px;
+    @media (max-width: 768px) {
+      display: none;
+    }
   }
 }

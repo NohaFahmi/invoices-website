@@ -11,12 +11,15 @@ const InvoicesListPage = () => {
       <div className="invoices-list-page_header">
         <div className="invoices-list-page_header-titles">
           <h1>Invoices</h1>
-          <p>There are 4 pending invoices</p>
+          <p>
+            <span className="full-text">There are 4 pending invoices</span>
+            <span className="short-text">4 Invoices</span>
+          </p>
         </div>
         <div className="invoices-list-page_header-filters">
           <Select
             className="filter-select"
-            placeholder="Filter by status"
+            placeholder="Filter"
             mode="multiple"
             bordered={false}
             showArrow={true}
@@ -37,7 +40,8 @@ const InvoicesListPage = () => {
             <span>
               <AiOutlinePlus />
             </span>
-            New Invoice
+            <span className="full-text">New Invoice</span>
+            <span className="short-text">New</span>
           </Button>
         </div>
       </div>

@@ -3,6 +3,19 @@
     max-width: 730px;
     margin: 72px auto 0;
     width: 70%;
+    .full-text {
+      @media (max-width: 768px) {
+        display: none;
+      }
+    }
+    .short-text {
+      @media (min-width: 769px) {
+        display: none;
+      }
+    }
+    @media (max-width: 768px) {
+      margin: 105px auto 0;
+    }
   }
   &_list-container {
     display: flex;
@@ -16,6 +29,10 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    flex-wrap: wrap;
+    @media (max-width: 768px) {
+      align-items: baseline;
+    }
 
     &-titles {
       display: flex;
@@ -27,6 +44,9 @@
         margin-bottom: 0;
         line-height: normal;
         font-weight: bold;
+        @media (max-width: 768px) {
+          font-size: 20px;
+        }
       }
       p {
         font-size: 12px;
@@ -38,13 +58,30 @@
       display: flex;
       gap: 40px;
       align-items: center;
+      @media (max-width: 768px) {
+        gap: 10px;
+      }
       .filter-select {
         width: 200px;
+        @media (max-width: 768px) {
+          width: 70px;
+        }
+      }
+      .ant-select-multiple .ant-select-selection-placeholder {
+        color: var(--invoices-list-page-title-color);
+        font-weight: bold;
+        font-size: 12px;
       }
       .btn-default {
         padding: 8px 15px 8px 8px;
+        @media (max-width: 768px) {
+          min-width: 90px;
+        }
       }
       .with-icon {
+        @media (max-width: 768px) {
+          gap: 8px;
+        }
         svg {
           fill: #9277ff;
         }

@@ -12,8 +12,10 @@ const InvoiceCard = () => {
         Due
         <span>19 Aug 2021</span>
       </p>
-      <p className="invoice-card-container__name">Jensen Huang</p>
-      <h3 className="invoice-card-container__amount">£ 1,800.90</h3>
+      <div className="invoice-card-container__mid-part">
+        <p className="invoice-card-container__name">Jensen Huang</p>
+        <h3 className="invoice-card-container__amount">£ 1,800.90</h3>
+      </div>
       <div className="invoice-card-container__status status-1">
         <GoPrimitiveDot />
         <span>paid</span>
