@@ -3,6 +3,9 @@
     max-width: 730px;
     margin: 72px auto 0;
     width: 70%;
+    @media (max-width: 768px) {
+      width: 90%;
+    }
     .full-text {
       @media (max-width: 768px) {
         display: none;

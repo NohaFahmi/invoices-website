@@ -3,6 +3,7 @@ import "../utils/styles/components/invoices-list-page.scss";
 import { Select, Button } from "antd";
 import { AiOutlinePlus } from "react-icons/ai";
 import "../utils/styles/forms.scss";
+import EmptyResult from "../components/emptyResult";
 
 const { Option } = Select;
 const InvoicesListPage = () => {
@@ -51,6 +52,7 @@ const InvoicesListPage = () => {
         <InvoiceCard />
         <InvoiceCard />
       </div>
+      {/* <EmptyResult /> */}
     </div>
   );
 };

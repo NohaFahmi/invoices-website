@@ -51,6 +51,8 @@
   --invoice-card-status-draft-color: #dfe3fa;
   --invoices-list-page-title-color: #fff;
   --invoices-list-page-subtitle-color: #dfe3fa;
+  --empty-result-title-color: #fff;
+  --empty-result-subtitle-color: #dfe3fa;
 }
 [data-theme="light"] {
   --btn-default-bg: #7c5dfa;
@@ -91,4 +93,6 @@
   --invoice-card-status-paid-color: #33d69f;
   --invoices-list-page-title-color: #0c0e16;
   --invoices-list-page-subtitle-color: #888eb0;
+  --empty-result-title-color: #0c0e16;
+  --empty-result-subtitle-color: #888eb0;
 }
