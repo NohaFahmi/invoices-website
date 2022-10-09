@@ -1,18 +1,16 @@
-import { Button, Drawer, Layout } from "antd";
+import { Layout } from "antd";
 import Header from "./header";
 import "../utils/styles/components/app-container.scss";
 import InvoiceFormDrawer from "./invoiceFormDrawer";
-import React, { useState, useContext } from "react";
-import { ThemeContext } from "../context/ThemeContext";
-import { useEffect } from "react";
+import React, { useState } from "react";
 import InvoicesListPage from "../pages/invoicesListPage";
 
 const AppContainer = () => {
-  const { Sider, Content } = Layout;
+  const { Sider } = Layout;
   const [open, setOpen] = useState(false);
-  const openMenu = () => {
-    setOpen(!open);
-  };
+  // const openMenu = () => {
+  //   setOpen(!open);
+  // };
   return (
     <Layout>
       <Sider className="main-side">
