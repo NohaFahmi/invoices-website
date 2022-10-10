@@ -4,7 +4,7 @@ import "../utils/styles/components/app-container.scss";
 import InvoiceFormDrawer from "./invoiceFormDrawer";
 import React, { useState } from "react";
 import InvoicesListPage from "../pages/invoicesListPage";
-
+import InvoiceDetailsPage from "../pages/invoiceDetailsPage";
 const AppContainer = () => {
   const { Sider } = Layout;
   const [open, setOpen] = useState(false);
@@ -29,7 +29,8 @@ const AppContainer = () => {
             }}
           />
         )}
-        <InvoicesListPage />
+        {/* <InvoicesListPage /> */}
+        <InvoiceDetailsPage />
       </Layout>
     </Layout>
   );

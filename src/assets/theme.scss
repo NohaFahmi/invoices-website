@@ -53,6 +53,8 @@
   --invoices-list-page-subtitle-color: #dfe3fa;
   --empty-result-title-color: #fff;
   --empty-result-subtitle-color: #dfe3fa;
+  --invoice-details-header-color: #dfe3fa;
+  --invoice-summary-footer-bg: #0c0e16;
 }
 [data-theme="light"] {
   --btn-default-bg: #7c5dfa;
@@ -95,4 +97,6 @@
   --invoices-list-page-subtitle-color: #888eb0;
   --empty-result-title-color: #0c0e16;
   --empty-result-subtitle-color: #888eb0;
+  --invoice-details-header-color: #858bb2;
+  --invoice-summary-footer-bg: #373b53;
 }
