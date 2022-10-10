@@ -1,8 +1,9 @@
-import { Button, Table } from "antd";
+import { Button, Table, Drawer } from "antd";
 import "../utils/styles/components/invoice-details.scss";
 import type { ColumnsType } from "antd/es/table";
 import { GoPrimitiveDot } from "react-icons/go";
 import { IoChevronBack } from "react-icons/io5";
+import { useState, useEffect } from "react";
 interface DataType {
   key: number;
   name: string;
@@ -34,6 +35,27 @@ const columns: ColumnsType<DataType> = [
     dataIndex: "total",
     key: "total",
     render: (text) => <p>£ {text}</p>,
+  },
+];
+const responsiveColumns: ColumnsType<DataType> = [
+  {
+    title: "",
+    dataIndex: "name",
+    key: "name",
+    render: (text, record) => (
+      <div className="item-wrapper">
+        <p className="item-name">{text}</p>
+        <p className="item-info">
+          {record.qty} x £ {record.price}
+        </p>
+      </div>
+    ),
+  },
+  {
+    title: "",
+    dataIndex: "total",
+    key: "total",
+    render: (text) => <p className="item-total">£ {text}</p>,
   },
 ];
 const data: DataType[] = [
@@ -121,7 +143,7 @@ const InvoiceDetailsPage = () => {
 
         <div className="invoice-details-page_summary">
           <Table
-            columns={columns}
+            columns={window.innerWidth > 768 ? columns : responsiveColumns}
             dataSource={data}
             bordered={false}
             pagination={{ hideOnSinglePage: true }}
@@ -132,6 +154,19 @@ const InvoiceDetailsPage = () => {
               </div>
             )}
           />
+        </div>
+      </div>
+      <div className="responsive-footer">
+        <div className="cta-btns">
+          <Button type="primary" shape="round" className="btn-grey">
+            Edit
+          </Button>
+          <Button type="primary" shape="round" className="btn-danger">
+            Delete
+          </Button>
+          <Button type="primary" shape="round" className="btn-default">
+            Mark as paid
+          </Button>
         </div>
       </div>
     </div>

@@ -1,0 +1,32 @@
+.confirmation-modal {
+  .ant-modal-content,
+  .ant-modal-header {
+    background-color: var(--invoice-card-bg);
+    border-bottom: none;
+  }
+  .ant-modal-footer {
+    border-top: none;
+    padding: 0 48px 48px;
+    border-radius: 0 0 8px 8px;
+  }
+  .ant-modal-content {
+    border-radius: 8px;
+  }
+  .ant-modal-header {
+    padding: 48px 48px 0;
+    border-radius: 8px 8px 0 0;
+  }
+  .ant-modal-body {
+    padding: 16px 48px;
+    p {
+      font-size: 12px;
+      margin-bottom: 0;
+      color: #888eb0;
+    }
+  }
+  .ant-modal-title {
+    font-size: 24px;
+    color: var(--invoice-card-id-color);
+    font-weight: bold;
+  }
+}

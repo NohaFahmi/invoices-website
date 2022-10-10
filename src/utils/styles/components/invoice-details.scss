@@ -7,6 +7,10 @@
   width: 70%;
   @media (max-width: 768px) {
     width: 90%;
+    margin: 105px auto 0;
+  }
+  @media (max-width: 1200px) {
+    width: 80%;
   }
   .back-btn {
     color: var(--invoice-card-amount);
@@ -19,6 +23,27 @@
       color: #7c5dfa;
     }
   }
+  .item-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    p {
+      margin-bottom: 0;
+    }
+  }
+  .item-name {
+    font-weight: bold;
+    color: var(--form-main-title-color);
+  }
+  .item-info {
+    color: var(--invoice-card-id-hash-color);
+    font-weight: bold;
+  }
+  .item-total {
+    font-size: 12px;
+    color: var(--form-main-title-color);
+    font-weight: bold;
+  }
   &_header {
     background-color: var(--invoice-card-bg);
     padding: 20px 32px;
@@ -27,13 +52,21 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    @media (max-width: 1200px) {
+      flex-wrap: wrap;
+      gap: 10px;
+    }
     &_status {
       &-wrapper {
         display: flex;
         align-items: center;
-        gap: 16px;
+        @media (max-width: 768px) {
+          justify-content: space-between;
+          width: 100%;
+        }
         span:first-of-type {
           color: var(--invoice-details-header-color);
+          margin-right: 16px;
         }
       }
       border-radius: 6px;
@@ -58,6 +91,9 @@
     &_cta-btns {
       display: flex;
       gap: 8px;
+      @media (max-width: 768px) {
+        display: none;
+      }
     }
   }
   &_invoice {
@@ -65,9 +101,17 @@
     padding: 48px;
     border-radius: 8px;
     box-shadow: 0 10px 10px -10px rgba(72, 84, 159, 0.1);
+    @media (max-width: 768px) {
+      padding: 24px;
+    }
     &_header {
       display: flex;
       justify-content: space-between;
+      @media (max-width: 768px) {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 30px;
+      }
       &-name {
         display: flex;
         flex-direction: column;
@@ -80,6 +124,9 @@
           font-weight: bold;
           color: var(--invoice-card-id-color);
           margin-bottom: 0;
+          @media (max-width: 768px) {
+            font-size: 12px;
+          }
         }
         p:last-of-type {
           color: var(--invoice-card-date-span);
@@ -94,6 +141,9 @@
         text-align: right;
         color: var(--invoice-card-date-span);
         font-weight: 500;
+        @media (max-width: 768px) {
+          text-align: left;
+        }
       }
     }
     &_col {
@@ -122,11 +172,18 @@
       display: flex;
       justify-content: space-between;
       margin-top: 21px;
+      @media (max-width: 768px) {
+        flex-wrap: wrap;
+        gap: 30px;
+      }
     }
     &-billto-info {
       display: flex;
       flex-direction: column;
       gap: 8px;
+      @media (max-width: 768px) {
+        margin-left: 10px;
+      }
       &-address {
         margin-bottom: 0;
         font-size: 11px;
@@ -196,11 +253,31 @@
         p:last-of-type {
           font-size: 24px;
           font-weight: bold;
+          @media (max-width: 768px) {
+            font-size: 20px;
+          }
         }
         p {
           margin-bottom: 0;
         }
       }
+    }
+  }
+  .responsive-footer {
+    @media (min-width: 769px) {
+      display: none;
+    }
+    background-color: var(--invoice-card-bg);
+    padding: 21px 24px 22px;
+    box-shadow: 0 10px 10px -10px rgba(72, 84, 159, 0.1);
+    position: absolute;
+    right: 0;
+    left: 0;
+    bottom: -248px;
+    .cta-btns {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
     }
   }
 }
