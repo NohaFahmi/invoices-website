@@ -6,6 +6,18 @@ import React, { useState } from "react";
 import InvoicesListPage from "../pages/invoicesListPage";
 import InvoiceDetailsPage from "../pages/invoiceDetailsPage";
 import ConfirmationModal from "./confirmationModal";
+import { createBrowserRouter, RouterProvider, Route } from "react-router-dom";
+
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <InvoicesListPage />,
+  },
+  {
+    path: "/invoice/:id",
+    element: <InvoiceDetailsPage />,
+  },
+]);
 const AppContainer = () => {
   const { Sider } = Layout;
   const [open, setOpen] = useState(false);
@@ -30,9 +42,8 @@ const AppContainer = () => {
             }}
           />
         )}
-        {/* <InvoicesListPage /> */}
-        {/* <InvoiceDetailsPage /> */}
-        <ConfirmationModal
+        <RouterProvider router={router} />
+        {/* <ConfirmationModal
           showModal={true}
           title={"Confirm Deletion"}
           message={
@@ -40,7 +51,7 @@ const AppContainer = () => {
           }
           onCancel={() => console.log("HERE")}
           onConfirm={() => console.log("DONE")}
-        />
+        /> */}
       </Layout>
     </Layout>
   );

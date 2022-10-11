@@ -5,7 +5,8 @@ import AppContainer from "./components/appContainer";
 import InvoiceFormDrawer from "./components/invoiceFormDrawer";
 import { ThemeContextProvider, switchDataTheme } from "./context/ThemeContext";
 import { useEffect } from "react";
-
+import InvoicesListPage from "./pages/invoicesListPage";
+import InvoiceDetailsPage from "./pages/invoiceDetailsPage";
 function App() {
   useEffect(() => {
     document.title = "Invoice App";
