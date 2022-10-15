@@ -1,13 +1,18 @@
-import { Button, Table, Drawer } from "antd";
+import { Button, Table } from "antd";
 import "../utils/styles/components/invoice-details.scss";
 import type { ColumnsType } from "antd/es/table";
 import { GoPrimitiveDot } from "react-icons/go";
 import { IoChevronBack } from "react-icons/io5";
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
+import { Link, useParams, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { IInvoiceState, IInvoice } from "../interfaces/invoice.interface";
+import { actionTypes } from "../actions/actions";
+import InvoicesService from "../services/invoices.service";
+import { invoiceStatus } from "./invoicesListPage";
 interface DataType {
-  key: number;
   name: string;
-  qty: number;
+  quantity: number;
   price: number;
   total: number;
 }
@@ -20,8 +25,8 @@ const columns: ColumnsType<DataType> = [
   },
   {
     title: "QTY.",
-    dataIndex: "qty",
-    key: "qty",
+    dataIndex: "quantity",
+    key: "quantity",
     render: (text) => <p>{text}</p>,
   },
   {
@@ -46,7 +51,7 @@ const responsiveColumns: ColumnsType<DataType> = [
       <div className="item-wrapper">
         <p className="item-name">{text}</p>
         <p className="item-info">
-          {record.qty} x £ {record.price}
+          {record.quantity} x £ {record.price}
         </p>
       </div>
     ),
@@ -58,117 +63,207 @@ const responsiveColumns: ColumnsType<DataType> = [
     render: (text) => <p className="item-total">£ {text}</p>,
   },
 ];
-const data: DataType[] = [
-  {
-    key: 1,
-    name: "Banner Design",
-    qty: 1,
-    price: 156.0,
-    total: 156.0,
-  },
-  {
-    key: 2,
-    name: "Email Design",
-    qty: 2,
-    price: 200,
-    total: 400,
-  },
-];
-const InvoiceDetailsPage = () => {
+
+const InvoiceDetailsPage = ({
+  onEditInvoice,
+}: {
+  onEditInvoice: (invoice: IInvoice) => void;
+}) => {
+  const invoice = useSelector((state: IInvoiceState) => state.invoice);
+  const dispatch = useDispatch();
+  const params = useParams();
+  const navigate = useNavigate();
+
+  const onChangeInvoiceStatus = (status: number) => {
+    if (invoice?._id && invoice.status) {
+      InvoicesService.changeInvoicePaymentStatus(invoice._id, invoice.status)
+        .then((result) => {
+          dispatch({
+            type: actionTypes.CHANGE_INVOICE_STATUS,
+            payload: result,
+          });
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  };
+
+  const onDeleteInvoice = () => {
+    if (invoice?._id) {
+      InvoicesService.deleteInvoiceById(invoice._id)
+        .then((result) => {
+          dispatch({
+            type: actionTypes.DELETE_INVOICE,
+            payload: result,
+          });
+          navigate("/");
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  };
+
+  useEffect(() => {
+    if (invoice) {
+      dispatch({ type: actionTypes.GET_INVOICE_BY_ID, payload: invoice });
+    } else {
+      if (params.id) {
+        InvoicesService.getInvoiceById(params.id)
+          .then((invoice) => {
+            dispatch({ type: actionTypes.GET_INVOICE_BY_ID, payload: invoice });
+          })
+          .catch((err) => {});
+      }
+    }
+  }, []);
+
   return (
     <div className="invoice-details-page">
-      <a href="#" className="back-btn">
+      <Link to="/" className="back-btn">
         <IoChevronBack />
         <span>Go Back</span>
-      </a>
-      <div className="invoice-details-page_header">
-        <div className="invoice-details-page_header_status-wrapper">
-          <span>status</span>
-          <span className="invoice-details-page_header_status status-1">
-            <GoPrimitiveDot />
-            Pending
-          </span>
-        </div>
-        <div className="invoice-details-page_header_cta-btns">
-          <Button type="primary" shape="round" className="btn-grey">
-            Edit
-          </Button>
-          <Button type="primary" shape="round" className="btn-danger">
-            Delete
-          </Button>
-          <Button type="primary" shape="round" className="btn-default">
-            Mark as paid
-          </Button>
-        </div>
-      </div>
-      <div className="invoice-details-page_invoice">
-        <div className="invoice-details-page_invoice_header">
-          <div className="invoice-details-page_invoice_header-name">
-            <p>
-              <span>#</span>XM9141
-            </p>
-            <p>Graphic Design</p>
-          </div>
-          <p className="invoice-details-page_invoice_header-address">
-            19 Union Terrace <br /> London <br /> E1 3EZ <br /> United Kingdom
-          </p>
-        </div>
-        <div className="invoice-details-page_invoice-body">
-          <div className="invoice-details-page_invoice-info">
-            <div className="invoice-details-page_invoice_col">
-              <p>Invoice Date</p>
-              <p>21 Aug 2021</p>
+      </Link>
+      {invoice && (
+        <>
+          <div className="invoice-details-page_header">
+            <div className="invoice-details-page_header_status-wrapper">
+              <span>status</span>
+              <span className="invoice-details-page_header_status status-1">
+                <GoPrimitiveDot />
+                {invoiceStatus[invoice.status]}
+              </span>
             </div>
-            <div className="invoice-details-page_invoice_col">
-              <p>Payment Due</p>
-              <p>21 Aug 2021</p>
-            </div>
-          </div>
-          <div className="invoice-details-page_invoice-billto-info">
-            <div className="invoice-details-page_invoice_col">
-              <p>Bill To</p>
-              <p>Alex Grim</p>
-            </div>
-            <p className="invoice-details-page_invoice-billto-info-address">
-              19 Union Terrace <br /> London <br /> E1 3EZ <br /> United Kingdom
-            </p>
-          </div>
-          <div className="invoice-details-page_invoice-reciever-info">
-            <div className="invoice-details-page_invoice_col">
-              <p>Sent to</p>
-              <p>alexgrim@mail.com</p>
+            <div className="invoice-details-page_header_cta-btns">
+              <Button
+                type="primary"
+                shape="round"
+                className="btn-grey"
+                onClick={() => {
+                  console.log("HERE");
+                  onEditInvoice(invoice);
+                }}
+              >
+                Edit
+              </Button>
+              <Button
+                type="primary"
+                shape="round"
+                className="btn-danger"
+                onClick={onDeleteInvoice}
+              >
+                Delete
+              </Button>
+              <Button
+                type="primary"
+                shape="round"
+                className="btn-default"
+                onClick={() => {
+                  onChangeInvoiceStatus(invoice.status);
+                }}
+              >
+                Mark as paid
+              </Button>
             </div>
           </div>
-        </div>
-
-        <div className="invoice-details-page_summary">
-          <Table
-            columns={window.innerWidth > 768 ? columns : responsiveColumns}
-            dataSource={data}
-            bordered={false}
-            pagination={{ hideOnSinglePage: true }}
-            footer={() => (
-              <div className="total-amount">
-                <p>Amount Due</p>
-                <p>£ 556.00</p>
+          <div className="invoice-details-page_invoice">
+            <div className="invoice-details-page_invoice_header">
+              <div className="invoice-details-page_invoice_header-name">
+                <p>
+                  <span>#</span>
+                  {invoice.invoiceID}
+                </p>
+                <p>{invoice.description}</p>
               </div>
-            )}
-          />
-        </div>
-      </div>
-      <div className="responsive-footer">
-        <div className="cta-btns">
-          <Button type="primary" shape="round" className="btn-grey">
-            Edit
-          </Button>
-          <Button type="primary" shape="round" className="btn-danger">
-            Delete
-          </Button>
-          <Button type="primary" shape="round" className="btn-default">
-            Mark as paid
-          </Button>
-        </div>
-      </div>
+              <p className="invoice-details-page_invoice_header-address">
+                {invoice.senderAddress.split("-").map((item, index) => {
+                  return item + <br />;
+                })}
+              </p>
+            </div>
+            <div className="invoice-details-page_invoice-body">
+              <div className="invoice-details-page_invoice-info">
+                <div className="invoice-details-page_invoice_col">
+                  <p>Invoice Date</p>
+                  <p>{invoice.createdAt}</p>
+                </div>
+                <div className="invoice-details-page_invoice_col">
+                  <p>Payment Due</p>
+                  <p>{invoice.paymentDue}</p>
+                </div>
+              </div>
+              <div className="invoice-details-page_invoice-billto-info">
+                <div className="invoice-details-page_invoice_col">
+                  <p>Bill To</p>
+                  <p>{invoice.billingClient.clientName}</p>
+                </div>
+                <p className="invoice-details-page_invoice-billto-info-address">
+                  {invoice.billingClient.clientAddress
+                    .split("-")
+                    .map((item, index) => {
+                      return item + <br />;
+                    })}
+                </p>
+              </div>
+              <div className="invoice-details-page_invoice-reciever-info">
+                <div className="invoice-details-page_invoice_col">
+                  <p>Sent to</p>
+                  <p>{invoice.billingClient.clientEmail}</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="invoice-details-page_summary">
+              <Table
+                columns={window.innerWidth > 768 ? columns : responsiveColumns}
+                dataSource={invoice.items}
+                bordered={false}
+                pagination={{ hideOnSinglePage: true }}
+                footer={() => (
+                  <div className="total-amount">
+                    <p>Amount Due</p>
+                    <p>£ {invoice.totalInvoicePrice}</p>
+                  </div>
+                )}
+              />
+            </div>
+          </div>
+          <div className="responsive-footer">
+            <div className="cta-btns">
+              <Button
+                type="primary"
+                shape="round"
+                className="btn-grey"
+                onClick={() => {
+                  console.log("HERE");
+                  onEditInvoice(invoice);
+                }}
+              >
+                Edit
+              </Button>
+              <Button
+                type="primary"
+                shape="round"
+                className="btn-danger"
+                onClick={onDeleteInvoice}
+              >
+                Delete
+              </Button>
+              <Button
+                type="primary"
+                shape="round"
+                className="btn-default"
+                onClick={() => {
+                  onChangeInvoiceStatus(invoice.status);
+                }}
+              >
+                Mark as paid
+              </Button>
+            </div>
+          </div>
+        </>
+      )}
     </div>
   );
 };

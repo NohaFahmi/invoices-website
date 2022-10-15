@@ -6,24 +6,16 @@ import React, { useState } from "react";
 import InvoicesListPage from "../pages/invoicesListPage";
 import InvoiceDetailsPage from "../pages/invoiceDetailsPage";
 import ConfirmationModal from "./confirmationModal";
-import { createBrowserRouter, RouterProvider, Route } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
+import { IInvoice } from "../interfaces/invoice.interface";
 
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <InvoicesListPage />,
-  },
-  {
-    path: "/invoice/:id",
-    element: <InvoiceDetailsPage />,
-  },
-]);
 const AppContainer = () => {
   const { Sider } = Layout;
   const [open, setOpen] = useState(false);
-  // const openMenu = () => {
-  //   setOpen(!open);
-  // };
+  const [invoice, setInvoice] = useState<IInvoice | undefined>();
+  const openMenu = () => {
+    setOpen(!open);
+  };
   return (
     <Layout>
       <Sider className="main-side">
@@ -33,16 +25,42 @@ const AppContainer = () => {
         <div className="responsive-header">
           <Header />
         </div>
-        {/* <button onClick={openMenu}>OPEN</button> */}
         {open && (
           <InvoiceFormDrawer
             showDrawer={true}
             hideDrawer={() => {
               setOpen(false);
             }}
+            invoice={invoice}
           />
         )}
-        <RouterProvider router={router} />
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <InvoicesListPage
+                onCreateNewInvoice={() => {
+                  setInvoice(undefined);
+                  setOpen(true);
+                }}
+              />
+            }
+          />
+          <Route
+            path="/invoice/:id"
+            element={
+              <InvoiceDetailsPage
+                onEditInvoice={(invoice: IInvoice) => {
+                  console.log(invoice);
+                  if (invoice) {
+                    setInvoice(invoice);
+                  }
+                  openMenu();
+                }}
+              />
+            }
+          />
+        </Routes>
         {/* <ConfirmationModal
           showModal={true}
           title={"Confirm Deletion"}
