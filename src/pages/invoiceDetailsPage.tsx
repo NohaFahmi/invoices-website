@@ -10,6 +10,7 @@ import { IInvoiceState, IInvoice } from "../interfaces/invoice.interface";
 import { actionTypes } from "../actions/actions";
 import InvoicesService from "../services/invoices.service";
 import { invoiceStatus } from "./invoicesListPage";
+import ConfirmationModal from "../components/confirmationModal";
 interface DataType {
   name: string;
   quantity: number;
@@ -73,6 +74,7 @@ const InvoiceDetailsPage = ({
   const dispatch = useDispatch();
   const params = useParams();
   const navigate = useNavigate();
+  const [openDialog, setOpenDialog] = useState(false);
 
   const onChangeInvoiceStatus = (status: number) => {
     if (invoice?._id) {
@@ -88,24 +90,26 @@ const InvoiceDetailsPage = ({
         });
     }
   };
-
-  const onDeleteInvoice = () => {
-    if (invoice?._id) {
+  const deleteInvoice = () => {
+    if(invoice?._id) {
       InvoicesService.deleteInvoiceById(invoice._id)
-        .then((result:{message: string}) => {
-          dispatch({
-            type: actionTypes.DELETE_INVOICE,
-            payload: {
-              id: invoice._id
-            },
-          });
-          navigate("/");
-        })
-        .catch((err:any) => {
-          console.log(err);
-        });
+          .then((result:{message: string}) => {
+            dispatch({
+              type: actionTypes.DELETE_INVOICE,
+              payload: {
+                id: invoice._id
+              },
+            });
+            navigate("/");
+          })
+          .catch((err:any) => {
+            console.log(err);
+          }).finally(() =>{
+            setOpenDialog(false);
+      })
     }
-  };
+  }
+
   const renderAddress = (address: string) => {
     return address.split("-").map((item, index) => {
       return (
@@ -116,9 +120,6 @@ const InvoiceDetailsPage = ({
     });
   };
   useEffect(() => {
-    // if (invoice) {
-    //   dispatch({ type: actionTypes.GET_INVOICE_BY_ID, payload: invoice });
-    // }
     if (params.id) {
       InvoicesService.getInvoiceById(params.id)
           .then((invoice: IInvoice) => {
@@ -150,7 +151,6 @@ const InvoiceDetailsPage = ({
                 shape="round"
                 className="btn-grey"
                 onClick={() => {
-                  console.log("HERE");
                   onEditInvoice(invoice);
                 }}
               >
@@ -160,7 +160,10 @@ const InvoiceDetailsPage = ({
                 type="primary"
                 shape="round"
                 className="btn-danger"
-                onClick={onDeleteInvoice}
+                onClick={() => {
+                  setOpenDialog(true);
+                  console.log(openDialog)
+                }}
               >
                 Delete
               </Button>
@@ -168,6 +171,7 @@ const InvoiceDetailsPage = ({
                 type="primary"
                 shape="round"
                 className="btn-default"
+                disabled={invoice.status == 3}
                 onClick={() => {
                   onChangeInvoiceStatus(3);
                 }}
@@ -263,7 +267,9 @@ const InvoiceDetailsPage = ({
                 type="primary"
                 shape="round"
                 className="btn-danger"
-                onClick={onDeleteInvoice}
+                onClick={() => {
+                  setOpenDialog(true);
+                }}
               >
                 Delete
               </Button>
@@ -279,6 +285,17 @@ const InvoiceDetailsPage = ({
               </Button>
             </div>
           </div>
+          <ConfirmationModal
+          showModal={openDialog}
+          title={"Confirm Deletion"}
+          message={
+            "Are you sure you want to delete invoice #XM9141? This action cannot be undone."
+          }
+          onConfirm={deleteInvoice}
+          onCancel={() => {
+            setOpenDialog(false);
+          }}
+        />
         </>
       )}
     </div>

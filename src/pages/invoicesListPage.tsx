@@ -25,9 +25,7 @@ const InvoicesListPage = ({
   const dispatch = useDispatch();
 
   useEffect(() => {
-    // if (invoicesList.length > 0) {
-    //   dispatch({ type: actionTypes.GET_INVOICES, payload: invoicesList });
-    InvoicesService.getAllInvoices()
+      InvoicesService.getAllInvoices()
         .then((invoices:IInvoice[]) => {
           dispatch({ type: actionTypes.GET_INVOICES, payload: invoices });
         })

@@ -14,23 +14,19 @@ const ConfirmationModal = ({
   onConfirm: () => void;
   onCancel: () => void;
 }) => {
-  const [isModalOpen, setIsModalOpen] = useState(showModal);
-
   const handleOk = () => {
     onConfirm();
-    setIsModalOpen(false);
   };
 
   const handleCancel = () => {
-    onCancel();
-    setIsModalOpen(false);
+      onCancel();
   };
 
   return (
     <>
       <Modal
         title={title}
-        open={isModalOpen}
+        open={showModal}
         onOk={handleOk}
         onCancel={handleCancel}
         closable={false}

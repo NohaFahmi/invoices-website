@@ -5,7 +5,6 @@ import InvoiceFormDrawer from "./invoiceFormDrawer";
 import React, { useState } from "react";
 import InvoicesListPage from "../pages/invoicesListPage";
 import InvoiceDetailsPage from "../pages/invoiceDetailsPage";
-import ConfirmationModal from "./confirmationModal";
 import { Route, Routes } from "react-router-dom";
 import { IInvoice } from "../interfaces/invoice.interface";
 
@@ -61,15 +60,6 @@ const AppContainer = () => {
             }
           />
         </Routes>
-        {/* <ConfirmationModal
-          showModal={true}
-          title={"Confirm Deletion"}
-          message={
-            "Are you sure you want to delete invoice #XM9141? This action cannot be undone."
-          }
-          onCancel={() => console.log("HERE")}
-          onConfirm={() => console.log("DONE")}
-        /> */}
       </Layout>
     </Layout>
   );
