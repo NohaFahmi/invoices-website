@@ -3,7 +3,7 @@ import "../utils/styles/components/invoice-details.scss";
 import type { ColumnsType } from "antd/es/table";
 import { GoPrimitiveDot } from "react-icons/go";
 import { IoChevronBack } from "react-icons/io5";
-import { useEffect } from "react";
+import {useEffect, useState} from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { IInvoiceState, IInvoice } from "../interfaces/invoice.interface";
@@ -75,15 +75,19 @@ const InvoiceDetailsPage = ({
   const navigate = useNavigate();
 
   const onChangeInvoiceStatus = (status: number) => {
-    if (invoice?._id && invoice.status) {
-      InvoicesService.changeInvoicePaymentStatus(invoice._id, invoice.status)
-        .then((result) => {
+    if (invoice?._id) {
+      InvoicesService.changeInvoicePaymentStatus(invoice._id, status)
+        .then((result:IInvoice) => {
           dispatch({
             type: actionTypes.CHANGE_INVOICE_STATUS,
             payload: result,
           });
+          dispatch({
+            type: actionTypes.GET_INVOICE_BY_ID,
+            payload: result,
+          });
         })
-        .catch((err) => {
+        .catch((err:any) => {
           console.log(err);
         });
     }
@@ -92,30 +96,39 @@ const InvoiceDetailsPage = ({
   const onDeleteInvoice = () => {
     if (invoice?._id) {
       InvoicesService.deleteInvoiceById(invoice._id)
-        .then((result) => {
+        .then((result:{message: string}) => {
           dispatch({
             type: actionTypes.DELETE_INVOICE,
-            payload: result,
+            payload: {
+              id: invoice._id
+            },
           });
           navigate("/");
         })
-        .catch((err) => {
+        .catch((err:any) => {
           console.log(err);
         });
     }
   };
-
+  const renderAddress = (address: string) => {
+    return address.split("-").map((item, index) => {
+      return (
+        <span key={`add-${Math.random()}`}>
+          {item} <br />
+        </span>
+      );
+    });
+  };
   useEffect(() => {
-    if (invoice) {
-      dispatch({ type: actionTypes.GET_INVOICE_BY_ID, payload: invoice });
-    } else {
-      if (params.id) {
-        InvoicesService.getInvoiceById(params.id)
-          .then((invoice) => {
+    // if (invoice) {
+    //   dispatch({ type: actionTypes.GET_INVOICE_BY_ID, payload: invoice });
+    // }
+    if (params.id) {
+      InvoicesService.getInvoiceById(params.id)
+          .then((invoice: IInvoice) => {
             dispatch({ type: actionTypes.GET_INVOICE_BY_ID, payload: invoice });
           })
-          .catch((err) => {});
-      }
+          .catch((err:any) => {});
     }
   }, []);
 
@@ -160,7 +173,7 @@ const InvoiceDetailsPage = ({
                 shape="round"
                 className="btn-default"
                 onClick={() => {
-                  onChangeInvoiceStatus(invoice.status);
+                  onChangeInvoiceStatus(3);
                 }}
               >
                 Mark as paid
@@ -177,20 +190,32 @@ const InvoiceDetailsPage = ({
                 <p>{invoice.description}</p>
               </div>
               <p className="invoice-details-page_invoice_header-address">
-                {invoice.senderAddress.split("-").map((item, index) => {
-                  return item + <br />;
-                })}
+                {renderAddress(invoice.senderAddress)}
               </p>
             </div>
             <div className="invoice-details-page_invoice-body">
               <div className="invoice-details-page_invoice-info">
                 <div className="invoice-details-page_invoice_col">
                   <p>Invoice Date</p>
-                  <p>{invoice.createdAt}</p>
+                  <p>
+                    {Intl.DateTimeFormat("en-GB", {
+                      day: "numeric",
+                      month: "short",
+                      year: "numeric",
+                    }).format(new Date(invoice.invoiceDate))}
+                  </p>
                 </div>
                 <div className="invoice-details-page_invoice_col">
                   <p>Payment Due</p>
-                  <p>{invoice.paymentDue}</p>
+                  {invoice.paymentDue && (
+                    <p>
+                      {Intl.DateTimeFormat("en-GB", {
+                        day: "numeric",
+                        month: "short",
+                        year: "numeric",
+                      }).format(new Date(invoice.paymentDue))}
+                    </p>
+                  )}
                 </div>
               </div>
               <div className="invoice-details-page_invoice-billto-info">
@@ -199,11 +224,7 @@ const InvoiceDetailsPage = ({
                   <p>{invoice.billingClient.clientName}</p>
                 </div>
                 <p className="invoice-details-page_invoice-billto-info-address">
-                  {invoice.billingClient.clientAddress
-                    .split("-")
-                    .map((item, index) => {
-                      return item + <br />;
-                    })}
+                  {renderAddress(invoice.billingClient.clientAddress)}
                 </p>
               </div>
               <div className="invoice-details-page_invoice-reciever-info">
@@ -219,11 +240,12 @@ const InvoiceDetailsPage = ({
                 columns={window.innerWidth > 768 ? columns : responsiveColumns}
                 dataSource={invoice.items}
                 bordered={false}
+                rowKey={(item) => item.name}
                 pagination={{ hideOnSinglePage: true }}
                 footer={() => (
                   <div className="total-amount">
                     <p>Amount Due</p>
-                    <p>£ {invoice.totalInvoicePrice}</p>
+                    <p>£ {invoice.totalInvoicePrice?.toFixed(2)}</p>
                   </div>
                 )}
               />
@@ -236,7 +258,6 @@ const InvoiceDetailsPage = ({
                 shape="round"
                 className="btn-grey"
                 onClick={() => {
-                  console.log("HERE");
                   onEditInvoice(invoice);
                 }}
               >
@@ -255,7 +276,7 @@ const InvoiceDetailsPage = ({
                 shape="round"
                 className="btn-default"
                 onClick={() => {
-                  onChangeInvoiceStatus(invoice.status);
+                  onChangeInvoiceStatus(3);
                 }}
               >
                 Mark as paid

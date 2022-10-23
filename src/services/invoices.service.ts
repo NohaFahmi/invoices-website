@@ -1,7 +1,6 @@
-import { IInvoice } from '../interfaces/invoice.interface';
+import {IInvoice} from '../interfaces/invoice.interface';
 import HttpRequest from './httpRequest';
-const  InvoicesService = () => {
-  
+const  InvoicesService = ():any=> {
     return {
       getAllInvoices: ()=> {
         return HttpRequest({
@@ -20,7 +19,7 @@ const  InvoicesService = () => {
       updateInvoice: (id: string, invoiceInfo: any) => {
         return HttpRequest({
           url: `/invoices/${id}`,
-          method: 'GET',
+          method: 'POST',
           data: invoiceInfo,
         });
       },
@@ -33,7 +32,7 @@ const  InvoicesService = () => {
       },
       createInvoice: (invoice: IInvoice) => {
         return HttpRequest({
-          url: `/invoices/changeStatus`,
+          url: `/invoices/create`,
           method: 'POST',
           data: invoice,
         });
@@ -50,7 +49,7 @@ const  InvoicesService = () => {
       changeInvoicePaymentStatus: (id: string, status: number) => {
         return HttpRequest({
           url: `/invoices/changeStatus`,
-          method: 'GET',
+          method: 'POST',
           data: {
             id: id,
             status:status

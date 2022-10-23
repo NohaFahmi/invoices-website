@@ -11,6 +11,7 @@
   }
   .ant-drawer-header {
     border-bottom: none;
+    padding: 56px 24px 24px;
     .ant-drawer-title {
       font-size: 24px;
       font-weight: bold;
@@ -87,7 +88,11 @@
   }
   .form-actions {
     display: flex;
-    justify-content: flex-end;
+    gap: 8px;
+    &_btns {
+      display: flex;
+      gap: 8px;
+    }
     .btn-grey {
       width: 96px;
       display: flex;
@@ -101,4 +106,8 @@
       gap: 8px;
     }
   }
+}
+.qty-input {
+  padding: 5px;
+  text-align: center;
 }

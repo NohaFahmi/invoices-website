@@ -6,7 +6,7 @@ export const actionTypes = {
     CREATE_INVOICE: 'CREATE_INVOICE',
     EDIT_INVOICE: 'EDIT_INVOICE',
     FILTER_INVOICES: 'FILTER_INVOICES',
-    CHANGE_INVOICE_STATUS: 'FILTER_INVOICES',
+    CHANGE_INVOICE_STATUS: 'CHANGE_INVOICE_STATUS',
 } 
 
 export const getAllInvoices = (invoices:[]) => {
@@ -33,10 +33,10 @@ export const createInvoice = (invoice: any) => {
         payload: invoice
     }
 }
-export const editInvoice = (invoiceId: string) => {
+export const editInvoice = (invoice:any) => {
     return {
         type: actionTypes.EDIT_INVOICE,
-        payload: invoiceId
+        payload: invoice
     }
 }
 export const filterInvoices = (status: number) => {

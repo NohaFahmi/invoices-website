@@ -11,7 +11,6 @@ const InvoiceCard = ({ invoice }: { invoice: IInvoice }) => {
   const navigateToInvoiceDetails = (id: string | undefined) => {
     navigate(`/invoice/${id}`);
   };
-
   return invoice ? (
     <div
       className="invoice-card-container"
@@ -25,14 +24,22 @@ const InvoiceCard = ({ invoice }: { invoice: IInvoice }) => {
       </h5>
       <p className="invoice-card-container__duedate">
         Due
-        <span>{invoice.paymentDue}</span>
+        {invoice.paymentDue && (
+          <span>
+            {Intl.DateTimeFormat("en-GB", {
+              day: "numeric",
+              month: "short",
+              year: "numeric",
+            }).format(new Date(invoice.paymentDue))}
+          </span>
+        )}
       </p>
       <div className="invoice-card-container__mid-part">
         <p className="invoice-card-container__name">
           {invoice.billingClient.clientName}
         </p>
         <h3 className="invoice-card-container__amount">
-          £ {invoice.totalInvoicePrice}
+          £ {invoice.totalInvoicePrice?.toFixed(2)}
         </h3>
       </div>
       {invoice.status && (

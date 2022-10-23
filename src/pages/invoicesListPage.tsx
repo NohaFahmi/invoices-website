@@ -6,7 +6,7 @@ import "../utils/styles/forms.scss";
 import { useEffect } from "react";
 import InvoicesService from "../services/invoices.service";
 import { useDispatch, useSelector } from "react-redux";
-import { IInvoiceState } from "../interfaces/invoice.interface";
+import {IInvoice, IInvoiceState} from "../interfaces/invoice.interface";
 import { actionTypes } from "../actions/actions";
 
 const { Option } = Select;
@@ -24,17 +24,15 @@ const InvoicesListPage = ({
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (invoicesList.length > 0) {
-      dispatch({ type: actionTypes.GET_INVOICES, payload: invoicesList });
-    } else {
-      InvoicesService.getAllInvoices()
-        .then((invoices) => {
+    // if (invoicesList.length > 0) {
+    //   dispatch({ type: actionTypes.GET_INVOICES, payload: invoicesList });
+    InvoicesService.getAllInvoices()
+        .then((invoices:IInvoice[]) => {
           dispatch({ type: actionTypes.GET_INVOICES, payload: invoices });
         })
-        .catch((err) => {
+        .catch((err:any) => {
           console.log(err);
         });
-    }
   }, []);
 
   return (
