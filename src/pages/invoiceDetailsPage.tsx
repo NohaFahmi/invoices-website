@@ -82,10 +82,6 @@ const InvoiceDetailsPage = ({
             type: actionTypes.CHANGE_INVOICE_STATUS,
             payload: result,
           });
-          dispatch({
-            type: actionTypes.GET_INVOICE_BY_ID,
-            payload: result,
-          });
         })
         .catch((err:any) => {
           console.log(err);

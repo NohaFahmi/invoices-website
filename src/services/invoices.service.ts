@@ -40,10 +40,11 @@ const  InvoicesService = ():any=> {
       filterInvoices: (status: number) => {
         return HttpRequest({
           url: `/invoices/filter`,
-          method: 'GET',
+          method: 'POST',
           data: {
-            filterOptions: {status: status}
-          },
+            status: status
+          }
+          ,
         });
       },
       changeInvoicePaymentStatus: (id: string, status: number) => {

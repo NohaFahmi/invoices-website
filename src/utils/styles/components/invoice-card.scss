@@ -25,6 +25,7 @@
     color: var(--invoice-card-id-color);
     font-weight: bold;
     margin-bottom: 0;
+    min-width: 60px;
     span {
       color: var(--invoice-card-id-hash-color);
     }
@@ -32,10 +33,13 @@
   &__name {
     color: var(--invoice-card-name);
     margin-bottom: 0;
+    min-width: 90px;
+    text-align: left;
   }
   &__duedate {
     color: var(--invoice-card-date);
     margin-bottom: 0;
+    min-width: 106px;
 
     span {
       color: var(--invoice-card-date-span);
@@ -47,6 +51,8 @@
     margin-bottom: 0;
     font-size: 16px;
     font-weight: bold;
+    min-width: 100px;
+    text-align: left;
   }
   &__status {
     border-radius: 6px;
@@ -55,6 +61,8 @@
     align-items: center;
     justify-content: center;
     gap: 8px;
+    width: 104px;
+    height: 40px;
     &.status-1 {
       color: var(--invoice-card-status-draft-color);
       background-color: var(--invoice-card-status-draft-bg);

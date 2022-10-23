@@ -8,6 +8,7 @@ import InvoicesService from "../services/invoices.service";
 import { useDispatch, useSelector } from "react-redux";
 import {IInvoice, IInvoiceState} from "../interfaces/invoice.interface";
 import { actionTypes } from "../actions/actions";
+import EmptyResult from "../components/emptyResult";
 
 const { Option } = Select;
 export const invoiceStatus: { [key: number]: string } = {
@@ -43,7 +44,7 @@ const InvoicesListPage = ({
           {invoicesList.length > 0 && (
             <p>
               <span className="full-text">
-                There are {invoicesList.length} pending invoices
+                There are {invoicesList.filter((item) => item.status == 2).length} pending invoices
               </span>
               <span className="short-text">{invoicesList.length} Invoices</span>
             </p>
@@ -53,17 +54,25 @@ const InvoicesListPage = ({
           <Select
             className="filter-select"
             placeholder="Filter"
-            mode="multiple"
             bordered={false}
             showArrow={true}
             showSearch={false}
-            onChange={() => {
-              console.log("HERE");
+            onChange={(value) => {
+              const status = value[0];
+              InvoicesService.filterInvoices(status).then((invoices: IInvoice[]) => {
+                dispatch({
+                    type: actionTypes.FILTER_INVOICES,
+                    payload: invoices
+                })
+              }).catch((err:any) => {
+                console.log(err);
+              })
             }}
           >
             <Option value="1">Draft</Option>
             <Option value="2">Pending</Option>
             <Option value="3">Paid</Option>
+            <Option value="4">All</Option>
           </Select>
           <Button
             type="primary"
@@ -83,8 +92,8 @@ const InvoicesListPage = ({
         {invoicesList.map((invoice) => {
           return <InvoiceCard key={invoice?._id} invoice={invoice} />;
         })}
+          {invoicesList.length === 0 && <EmptyResult />}
       </div>
-      {/* <EmptyResult /> */}
     </div>
   );
 };

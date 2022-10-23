@@ -34,8 +34,16 @@ const actionMap = {
             ...state, invoice: action.payload
         }
     },
-    [actionTypes.FILTER_INVOICES]: (state: IInvoiceState, action: IInvoiceAction):IInvoiceState => state,
-    [actionTypes.CHANGE_INVOICE_STATUS]: (state: IInvoiceState, action: IInvoiceAction):IInvoiceState => state,
+    [actionTypes.FILTER_INVOICES]: (state: IInvoiceState, action: IInvoiceAction):IInvoiceState => {
+        return{
+            ...state, invoices: action.payload
+        }
+    },
+    [actionTypes.CHANGE_INVOICE_STATUS]: (state: IInvoiceState, action: IInvoiceAction):IInvoiceState => {
+        return{
+            ...state, invoice: action.payload
+        }
+    },
 }
 
  export const invoiceReducer = (state:IInvoiceState = initialState, action: IInvoiceAction): IInvoiceState => {
