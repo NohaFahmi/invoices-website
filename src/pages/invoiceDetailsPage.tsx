@@ -7,10 +7,11 @@ import {useEffect, useState} from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { IInvoiceState, IInvoice } from "../interfaces/invoice.interface";
-import { actionTypes } from "../actions/actions";
+import {actionTypes, editInvoice} from "../actions/actions";
 import InvoicesService from "../services/invoices.service";
 import { invoiceStatus } from "./invoicesListPage";
 import ConfirmationModal from "../components/confirmationModal";
+import ResponsiveFooter from "../components/responsiveFooter";
 interface DataType {
   name: string;
   quantity: number;
@@ -52,7 +53,7 @@ const responsiveColumns: ColumnsType<DataType> = [
       <div className="item-wrapper">
         <p className="item-name">{text}</p>
         <p className="item-info">
-          {record.quantity} x £ {record.price}
+          {record.quantity} x £{record.price.toFixed(0)}
         </p>
       </div>
     ),
@@ -61,7 +62,7 @@ const responsiveColumns: ColumnsType<DataType> = [
     title: "",
     dataIndex: "total",
     key: "total",
-    render: (text) => <p className="item-total">£ {text}</p>,
+    render: (text) => <p className="item-total">£{text.toFixed(0)}</p>,
   },
 ];
 
@@ -74,6 +75,7 @@ const InvoiceDetailsPage = ({
   const dispatch = useDispatch();
   const params = useParams();
   const navigate = useNavigate();
+  const [screenWidth, setScreenWidth] = useState(window.innerWidth);
   const [openDialog, setOpenDialog] = useState(false);
 
   const onChangeInvoiceStatus = (status: number) => {
@@ -109,7 +111,6 @@ const InvoiceDetailsPage = ({
       })
     }
   }
-
   const renderAddress = (address: string) => {
     return address.split("-").map((item, index) => {
       return (
@@ -126,6 +127,9 @@ const InvoiceDetailsPage = ({
             dispatch({ type: actionTypes.GET_INVOICE_BY_ID, payload: invoice });
           })
           .catch((err:any) => {});
+        window.addEventListener('resize', () => {
+          setScreenWidth(window.innerWidth);
+        })
     }
   }, []);
 
@@ -237,7 +241,7 @@ const InvoiceDetailsPage = ({
 
             <div className="invoice-details-page_summary">
               <Table
-                columns={window.innerWidth > 768 ? columns : responsiveColumns}
+                columns={screenWidth > 768 ? columns : responsiveColumns}
                 dataSource={invoice.items}
                 bordered={false}
                 rowKey={(item) => item.name}
@@ -245,46 +249,19 @@ const InvoiceDetailsPage = ({
                 footer={() => (
                   <div className="total-amount">
                     <p>Amount Due</p>
-                    <p>£ {invoice.totalInvoicePrice?.toFixed(2)}</p>
+                    <p>£ {invoice.totalInvoicePrice?.toFixed(0)}</p>
                   </div>
                 )}
               />
             </div>
           </div>
-          <div className="responsive-footer">
-            <div className="cta-btns">
-              <Button
-                type="primary"
-                shape="round"
-                className="btn-grey"
-                onClick={() => {
-                  onEditInvoice(invoice);
-                }}
-              >
-                Edit
-              </Button>
-              <Button
-                type="primary"
-                shape="round"
-                className="btn-danger"
-                onClick={() => {
-                  setOpenDialog(true);
-                }}
-              >
-                Delete
-              </Button>
-              <Button
-                type="primary"
-                shape="round"
-                className="btn-default"
-                onClick={() => {
-                  onChangeInvoiceStatus(3);
-                }}
-              >
-                Mark as paid
-              </Button>
-            </div>
-          </div>
+          <ResponsiveFooter onEditInvoice={() => {
+            editInvoice(invoice);
+          }} onDeleteInvoice={() => {
+            setOpenDialog(true)
+          }} onChangeInvoiceStatus={() => {
+            onChangeInvoiceStatus(3)
+          }} isPaid={invoice.status === 3}/>
           <ConfirmationModal
           showModal={openDialog}
           title={"Confirm Deletion"}

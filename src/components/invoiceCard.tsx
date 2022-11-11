@@ -39,7 +39,7 @@ const InvoiceCard = ({ invoice }: { invoice: IInvoice }) => {
           {invoice.billingClient.clientName}
         </p>
         <h3 className="invoice-card-container__amount">
-          £ {invoice.totalInvoicePrice?.toFixed(2)}
+          £ {invoice.totalInvoicePrice?.toFixed(0)}
         </h3>
       </div>
       {invoice.status && (

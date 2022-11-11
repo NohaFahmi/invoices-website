@@ -263,21 +263,4 @@
       }
     }
   }
-  .responsive-footer {
-    @media (min-width: 769px) {
-      display: none;
-    }
-    background-color: var(--invoice-card-bg);
-    padding: 21px 24px 22px;
-    box-shadow: 0 10px 10px -10px rgba(72, 84, 159, 0.1);
-    position: absolute;
-    right: 0;
-    left: 0;
-    bottom: -340px;
-    .cta-btns {
-      display: flex;
-      justify-content: center;
-      gap: 8px;
-    }
-  }
 }
