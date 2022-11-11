@@ -2,6 +2,7 @@ import { Button, Form, Input, DatePicker, Select, Space } from "antd";
 import moment from "moment";
 import { MdDelete } from "react-icons/md";
 import { IInvoice } from "../interfaces/invoice.interface";
+import {useCallback, useEffect, useState} from "react";
 
 const InvoiceForm = ({
   invoice,
@@ -16,7 +17,9 @@ const InvoiceForm = ({
 }) => {
   const [form] = Form.useForm();
   const dateFormat = "YYYY/MM/DD";
-
+  const isFormInValid = () => !form.isFieldsTouched(true) ||
+      form.getFieldsError().filter(({ errors }) => errors.length).length > 0
+  const [disabled, setDisabled] = useState(true);
   let invoiceValues = {
     stAddress: invoice?.senderAddress.split("-")[0] || "",
     city: invoice?.senderAddress.split("-")[1] || "",
@@ -31,295 +34,323 @@ const InvoiceForm = ({
     invoiceDate: invoice ? moment(invoice.invoiceDate, dateFormat) : undefined,
     description: invoice?.description || "",
     paymentTerms: invoice?.paymentTerms || "",
-    items: invoice?.items || [],
+    items: invoice? invoice.items:  [],
   };
-  const validationRules = [
-    { required: true, message: "This field is required!" },
+  const textValidationRules = [
+    { required: true,
+      message: "Required!"},
     {
       type: "object" as const,
       required: true,
-      message: "This field is required!",
-    },
+      message: "Required!",
+    }
   ];
   const { Option } = Select;
   const getTotalPriceForItem = (qty: number, price: number): number => {
     return qty * price;
   };
+  const onFormSubmit = useCallback(async () => {
+    form
+        .validateFields()
+        .then(() => {
+          if(form.getFieldValue('items') == undefined) {
+            setDisabled(true)
+          }
+          setDisabled(false);
+        })
+        .catch((errors) => {
+          setDisabled(true)
+        });
+  }, [form]);
+  useEffect(() => {
+    setDisabled(isFormInValid());
+  }, [isFormInValid()])
   return (
-    <Form
-      layout="vertical"
-      form={form}
-      initialValues={invoice ? invoiceValues : {}}
-      onValuesChange={(changedVal, val) => {
-        invoiceValues = val;
-        if (changedVal["items"]) {
-          const { items } = form.getFieldsValue();
-          items.map(
-            (item: { quantity: number; price: number; total: number }) => {
-              item.total = getTotalPriceForItem(item.quantity, item.price);
-            }
-          );
-          form.setFieldsValue("items");
-        }
-      }}
-    >
-      <h1 className="form-title">Bill From</h1>
-      <Form.Item
-        label="Street Address"
-        name="stAddress"
-        rules={[validationRules[0]]}
-      >
-        <Input />
-      </Form.Item>
-      <Form.Item className="input-group">
-        <Form.Item
-          label="City"
-          className="location-input"
-          name="city"
-          rules={[validationRules[0]]}
-        >
-          <Input />
-        </Form.Item>
-        <Form.Item
-          label="Post Code"
-          className="location-input"
-          name="postCode"
-          rules={[validationRules[0]]}
-        >
-          <Input />
-        </Form.Item>
-        <Form.Item
-          label="Country"
-          className="location-input"
-          name="country"
-          rules={[validationRules[0]]}
-        >
-          <Input />
-        </Form.Item>
-      </Form.Item>
+   <>
+     <Form
+         layout="vertical"
+         form={form}
+         initialValues={invoice ? invoiceValues : {}}
+         onValuesChange={async (changedVal, val) => {
+           invoiceValues = val;
+           if (changedVal["items"]) {
+             const { items } = form.getFieldsValue();
+             items.map(
+                 (item: { quantity: number; price: number; total: number }) => {
+                   item.total = item.quantity > 0 && item.price > 0  ? getTotalPriceForItem(item.quantity, item.price): 0;
+                 }
+             );
+             form.setFieldsValue("items");
+           }
+         }}
+         onChange={() => {
+           onFormSubmit();
+         }}
+     >
+       <h1 className="form-title">Bill From</h1>
+       <Form.Item
+           label="Street Address"
+           name="stAddress"
+           rules={[textValidationRules[0]]}
+       >
+         <Input />
+       </Form.Item>
+       <Form.Item className="input-group">
+         <Form.Item
+             label="City"
+             className="location-input"
+             name="city"
+             rules={[textValidationRules[0]]}
+         >
+           <Input />
+         </Form.Item>
+         <Form.Item
+             label="Post Code"
+             className="location-input"
+             name="postCode"
+             rules={[textValidationRules[0]]}
+         >
+           <Input />
+         </Form.Item>
+         <Form.Item
+             label="Country"
+             className="location-input"
+             name="country"
+             rules={[textValidationRules[0]]}
+         >
+           <Input />
+         </Form.Item>
+       </Form.Item>
 
-      <h1 className="form-title">Bill To</h1>
-      <Form.Item
-        label="Client’s Name"
-        name="clientName"
-        rules={[validationRules[0]]}
-      >
-        <Input />
-      </Form.Item>
-      <Form.Item
-        label="Client’s Email"
-        name="clientEmail"
-        rules={[validationRules[0]]}
-      >
-        <Input />
-      </Form.Item>
-      <Form.Item
-        label="Street Address"
-        name="clientStAddress"
-        rules={[validationRules[0]]}
-      >
-        <Input />
-      </Form.Item>
+       <h1 className="form-title">Bill To</h1>
+       <Form.Item
+           label="Client’s Name"
+           name="clientName"
+           rules={[textValidationRules[0]]}
+       >
+         <Input />
+       </Form.Item>
+       <Form.Item
+           label="Client’s Email"
+           name="clientEmail"
+           rules={[textValidationRules[0]]}
+       >
+         <Input />
+       </Form.Item>
+       <Form.Item
+           label="Street Address"
+           name="clientStAddress"
+           rules={[textValidationRules[0]]}
+       >
+         <Input />
+       </Form.Item>
 
-      <Form.Item className="input-group">
-        <Form.Item label="City" name="clientCity" rules={[validationRules[0]]}>
-          <Input />
-        </Form.Item>
-        <Form.Item
-          label="Post Code"
-          name="clientPostCode"
-          rules={[validationRules[0]]}
-        >
-          <Input />
-        </Form.Item>
-        <Form.Item
-          label="Country"
-          name="clientCountry"
-          rules={[validationRules[0]]}
-        >
-          <Input />
-        </Form.Item>
-      </Form.Item>
-      <Form.Item className="input-group">
-        <Form.Item
-          className="date-input"
-          label="Invoice Date"
-          rules={[validationRules[1]]}
-          name="invoiceDate"
-        >
-          <DatePicker format={dateFormat} />
-        </Form.Item>
-        <Form.Item
-          label="Payment Terms"
-          name="paymentTerms"
-          className="payment-input"
-          rules={[validationRules[0]]}
-        >
-          <Select size="large" className="payment-selection">
-            <Option value={1}>Next 1 days</Option>
-            <Option value={7}>Next 7 day</Option>
-            <Option value={14}>Next 14 days</Option>
-            <Option value={30}>Next 30 days</Option>
-          </Select>
-        </Form.Item>
-      </Form.Item>
-      <Form.Item
-        label="Project Description"
-        name="description"
-        rules={[validationRules[0]]}
-      >
-        <Input />
-      </Form.Item>
-      <div>
-        <h3 className="form-subtitle">Item List</h3>
-        <Form.List name="items">
-          {(fields, { add, remove }) => (
-            <>
-              {fields.map(({ key, name, ...restField }) => (
-                <Space key={key} className="form-group">
-                  <Form.Item
-                    {...restField}
-                    label="Item Name"
-                    name={[name, "name"]}
-                    rules={[validationRules[0]]}
-                  >
-                    <Input />
-                  </Form.Item>
-                  <Form.Item
-                    {...restField}
-                    label="Qty."
-                    name={[name, "quantity"]}
-                    rules={[validationRules[0]]}
-                  >
-                    <Input />
-                  </Form.Item>
-                  <Form.Item
-                    {...restField}
-                    label="Price"
-                    name={[name, "price"]}
-                    rules={[validationRules[0]]}
-                  >
-                    <Input />
-                  </Form.Item>
-                  <Form.Item
-                    {...restField}
-                    label="Total"
-                    name={[name, "total"]}
-                    rules={[validationRules[0]]}
-                  >
-                    <Input placeholder="Total" disabled />
-                  </Form.Item>
-                  <MdDelete
-                    onClick={() => remove(name)}
-                    size="40px"
-                    className="delete-icon"
-                  />
-                </Space>
-              ))}
-              <Form.Item>
-                <Button onClick={() => add()} className="btn-wide">
-                  + Add field
-                </Button>
-              </Form.Item>
-            </>
-          )}
-        </Form.List>
-      </div>
-      <div
-        className="form-actions"
-        style={{
-          justifyContent: invoice ? "flex-end" : "space-between",
-        }}
-      >
-        <Button
-          className="btn-grey"
-          onClick={() => {
-            form.resetFields();
-            onCancel();
-          }}
-        >
-          Cancel
-        </Button>
-        <div className="form-actions_btns">
-          {!invoice && (
-            <Button
-              className="btn-dark"
-              onClick={() => {
-                let invoice: IInvoice = {
-                  billingClient: {
-                    clientAddress:
-                      invoiceValues.clientStAddress +
-                      "-" +
-                      invoiceValues.clientCity +
-                      "-" +
-                      invoiceValues.clientPostCode +
-                      "-" +
-                      invoiceValues.clientCountry,
-                    clientEmail: invoiceValues.clientEmail,
-                    clientName: invoiceValues.clientName,
-                  },
-                  description: invoiceValues.description,
-                  invoiceDate: moment(invoiceValues.invoiceDate, dateFormat)
-                    .toDate()
-                    .toISOString(),
-                  items: invoiceValues.items,
-                  paymentTerms: Number(invoiceValues.paymentTerms),
-                  senderAddress:
-                    invoiceValues.stAddress +
-                    "-" +
-                    invoiceValues.city +
-                    "-" +
-                    invoiceValues.postCode +
-                    "-" +
-                    invoiceValues.country,
-                  status: 1,
-                };
-                onSavingDraft(invoice);
-              }}
-            >
-              Save as Draft
-            </Button>
-          )}
-          <Button
-            className="btn-default"
-            onClick={() => {
-              let invoice = {
-                billingClient: {
-                  clientAddress:
-                    invoiceValues.clientStAddress +
-                    "-" +
-                    invoiceValues.clientCity +
-                    "-" +
-                    invoiceValues.clientPostCode +
-                    "-" +
-                    invoiceValues.clientCountry,
-                  clientEmail: invoiceValues.clientEmail,
-                  clientName: invoiceValues.clientName,
-                },
-                description: invoiceValues.description,
-                invoiceDate: moment(invoiceValues.invoiceDate, dateFormat)
-                  .toDate().toISOString(),
-                items: [...invoiceValues.items],
-                paymentTerms: Number(invoiceValues.paymentTerms),
-                senderAddress:
-                  invoiceValues.stAddress +
-                  "-" +
-                  invoiceValues.city +
-                  "-" +
-                  invoiceValues.postCode +
-                  "-" +
-                  invoiceValues.country,
-                status: 2,
-              };
-              onSavingInvoice(invoice);
-            }}
-            htmlType="submit"
-          >
-            Save & Send
-          </Button>
-        </div>
-      </div>
-    </Form>
+       <Form.Item className="input-group">
+         <Form.Item label="City" name="clientCity" rules={[textValidationRules[0]]}>
+           <Input />
+         </Form.Item>
+         <Form.Item
+             label="Post Code"
+             name="clientPostCode"
+             rules={[textValidationRules[0]]}
+         >
+           <Input />
+         </Form.Item>
+         <Form.Item
+             label="Country"
+             name="clientCountry"
+             rules={[textValidationRules[0]]}
+         >
+           <Input />
+         </Form.Item>
+       </Form.Item>
+       <Form.Item className="input-group">
+         <Form.Item
+             className="date-input"
+             label="Invoice Date"
+             rules={[textValidationRules[1]]}
+             name="invoiceDate"
+         >
+           <DatePicker format={dateFormat} status={"error"}/>
+         </Form.Item>
+         <Form.Item
+             label="Payment Terms"
+             name="paymentTerms"
+             className="payment-input"
+             rules={[textValidationRules[0]]}
+         >
+           <Select size="large" className="payment-selection">
+             <Option value={1}>Next 1 days</Option>
+             <Option value={7}>Next 7 day</Option>
+             <Option value={14}>Next 14 days</Option>
+             <Option value={30}>Next 30 days</Option>
+           </Select>
+         </Form.Item>
+       </Form.Item>
+       <Form.Item
+           label="Project Description"
+           name="description"
+           rules={[textValidationRules[0]]}
+       >
+         <Input />
+       </Form.Item>
+       <div>
+         <h3 className="form-subtitle">Item List</h3>
+         <Form.List name="items">
+           {(fields, { add, remove }) => (
+               <>
+                 {fields.map(({ key, name, ...restField }) => (
+                     <Space key={key} className="form-group">
+                       <Form.Item
+                           {...restField}
+                           label="Item Name"
+                           name={[name, "name"]}
+                           rules={[textValidationRules[0]]}
+                       >
+                         <Input />
+                       </Form.Item>
+                       <Form.Item
+                           {...restField}
+                           label="Qty."
+                           name={[name, "quantity"]}
+                           rules={[textValidationRules[0]]}
+                       >
+                         <Input type='number' min='1'/>
+                       </Form.Item>
+                       <Form.Item
+                           {...restField}
+                           label="Price"
+                           name={[name, "price"]}
+                           rules={[textValidationRules[0]]}
+                       >
+                         <Input type='number' min='0'/>
+                       </Form.Item>
+                       <Form.Item
+                           {...restField}
+                           label="Total"
+                           name={[name, "total"]}
+                       >
+                         <Input placeholder="Total" disabled />
+                       </Form.Item>
+                       <MdDelete
+                           onClick={() => remove(name)}
+                           size="40px"
+                           className="delete-icon"
+                       />
+                     </Space>
+                 ))}
+                 <Form.Item>
+                   <Button onClick={() => add()} className="btn-wide">
+                     + Add field
+                   </Button>
+                 </Form.Item>
+               </>
+           )}
+         </Form.List>
+       </div>
+       <div
+           className="form-actions"
+           style={{
+             justifyContent: invoice ? "flex-end" : "space-between",
+           }}
+       >
+         <Button
+             className="btn-grey"
+             onClick={() => {
+               form.resetFields();
+               onCancel();
+             }}
+         >
+           Cancel
+         </Button>
+         <div className="form-actions_btns">
+           {!invoice && (
+               <Button
+                   className="btn-dark"
+                   onClick={() => {
+                     let invoice: IInvoice = {
+                       billingClient: {
+                         clientAddress:
+                             invoiceValues.clientStAddress +
+                             "-" +
+                             invoiceValues.clientCity +
+                             "-" +
+                             invoiceValues.clientPostCode +
+                             "-" +
+                             invoiceValues.clientCountry,
+                         clientEmail: invoiceValues.clientEmail,
+                         clientName: invoiceValues.clientName,
+                       },
+                       description: invoiceValues.description,
+                       invoiceDate: moment(invoiceValues.invoiceDate, dateFormat)
+                           ?.toDate()
+                           ?.toISOString(),
+                       items: invoiceValues.items,
+                       paymentTerms: Number(invoiceValues.paymentTerms),
+                       senderAddress:
+                           invoiceValues.stAddress +
+                           "-" +
+                           invoiceValues.city +
+                           "-" +
+                           invoiceValues.postCode +
+                           "-" +
+                           invoiceValues.country,
+                       status: 1,
+                     };
+                     if(!isFormInValid() && invoiceValues.items.length > 0) {
+                       onSavingDraft(invoice);
+                     }
+                   }}
+                   disabled={disabled}
+               >
+                 Save as Draft
+               </Button>
+           )}
+           <Button
+               className="btn-default"
+               disabled={disabled}
+               onClick={() => {
+                 let invoice = {
+                   billingClient: {
+                     clientAddress:
+                         invoiceValues.clientStAddress +
+                         "-" +
+                         invoiceValues.clientCity +
+                         "-" +
+                         invoiceValues.clientPostCode +
+                         "-" +
+                         invoiceValues.clientCountry,
+                     clientEmail: invoiceValues.clientEmail,
+                     clientName: invoiceValues.clientName,
+                   },
+                   description: invoiceValues.description,
+                   invoiceDate: moment(invoiceValues.invoiceDate, dateFormat)
+                       .toDate().toISOString(),
+                   items: [...invoiceValues.items],
+                   paymentTerms: Number(invoiceValues.paymentTerms),
+                   senderAddress:
+                       invoiceValues.stAddress +
+                       "-" +
+                       invoiceValues.city +
+                       "-" +
+                       invoiceValues.postCode +
+                       "-" +
+                       invoiceValues.country,
+                   status: 2,
+                 };
+                 if(!isFormInValid() && invoice.items.length > 0) {
+                   onSavingInvoice(invoice);
+                 }
+               }}
+           >
+             Save & Send
+           </Button>
+         </div>
+       </div>
+     </Form>
+
+
+   </>
   );
 };
 export default InvoiceForm;

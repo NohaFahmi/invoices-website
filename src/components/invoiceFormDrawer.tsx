@@ -33,6 +33,7 @@ const InvoiceFormDrawer = ({
       onClose={onClose}
       open={showDrawer}
       className="drawer-container"
+      getContainer={false}
     >
       <InvoiceForm
         invoice={invoice}
