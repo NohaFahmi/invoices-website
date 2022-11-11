@@ -1,4 +1,4 @@
-import InvoiceCard from "../components/invoiceCard";
+import InvoiceCard from "../components/InvoiceCard";
 import "../assets/styles/components/invoices-list-page.scss";
 import {Select, Button, message, Spin} from "antd";
 import { AiOutlinePlus } from "react-icons/ai";
@@ -8,7 +8,7 @@ import InvoicesService from "../services/invoices.service";
 import { useDispatch, useSelector } from "react-redux";
 import {IInvoice, IInvoiceState} from "../interfaces/invoice.interface";
 import { actionTypes } from "../actions/actions";
-import EmptyResult from "../components/emptyResult";
+import EmptyResult from "../components/EmptyResult";
 
 const { Option } = Select;
 export const invoiceStatus: { [key: number]: string } = {

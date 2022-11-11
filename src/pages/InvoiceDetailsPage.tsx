@@ -7,11 +7,11 @@ import {useEffect, useState} from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { IInvoiceState, IInvoice } from "../interfaces/invoice.interface";
-import {actionTypes, editInvoice} from "../actions/actions";
+import {actionTypes} from "../actions/actions";
 import InvoicesService from "../services/invoices.service";
-import { invoiceStatus } from "./invoicesListPage";
-import ConfirmationModal from "../components/confirmationModal";
-import ResponsiveFooter from "../components/responsiveFooter";
+import { invoiceStatus } from "./InvoicesListPage";
+import ConfirmationModal from "../components/ConfirmationModal";
+import ResponsiveFooter from "../components/ResponsiveFooter";
 interface DataType {
   name: string;
   quantity: number;
@@ -268,7 +268,7 @@ const InvoiceDetailsPage = ({
             </div>
           </div>
           <ResponsiveFooter onEditInvoice={() => {
-            editInvoice(invoice);
+            onEditInvoice(invoice);
           }} onDeleteInvoice={() => {
             setOpenDialog(true)
           }} onChangeInvoiceStatus={() => {

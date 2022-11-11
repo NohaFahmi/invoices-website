@@ -33,15 +33,15 @@ export interface IInvoiceState {
     error?: any;
     loading: boolean;
 }
-export interface IInvoiceInfo {
-    filterInvoices: (status: number) =>IInvoice[]
-    getAllInvoices: () =>IInvoice[]
-    getInvoiceById: (id: string) => Promise<IInvoice>;
-    changeInvoicePaymentStatus: (id: string, status: number) => Promise<IInvoice>;
-    deleteInvoiceById: (id: string) => Promise<{message: string}>;
-    createInvoice: (invoice: IInvoice) => Promise<IInvoice>;
-    updateInvoice: (id: string, invoiceInfo: any) => IInvoice
-}
+// export interface IInvoiceInfo {
+//     filterInvoices: (status: number) =>IInvoice[]
+//     getAllInvoices: () =>IInvoice[]
+//     getInvoiceById: (id: string) => Promise<IInvoice>;
+//     changeInvoicePaymentStatus: (id: string, status: number) => Promise<IInvoice>;
+//     deleteInvoiceById: (id: string) => Promise<{message: string}>;
+//     createInvoice: (invoice: IInvoice) => Promise<IInvoice>;
+//     updateInvoice: (id: string, invoiceInfo: any) => IInvoice
+// }
 export interface IInvoiceAction {
     type: string;
     payload: any;

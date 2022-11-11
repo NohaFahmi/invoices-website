@@ -3,7 +3,7 @@ import "../assets/styles/components/invoice-card.scss";
 import { GoPrimitiveDot } from "react-icons/go";
 import { IInvoice } from "../interfaces/invoice.interface";
 import { useNavigate } from "react-router-dom";
-import { invoiceStatus } from "../pages/invoicesListPage";
+import { invoiceStatus } from "../pages/InvoicesListPage";
 
 const InvoiceCard = ({ invoice }: { invoice: IInvoice }) => {
   const navigate = useNavigate();

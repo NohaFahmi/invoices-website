@@ -1,10 +1,10 @@
 import { Layout } from "antd";
-import Header from "./header";
+import Header from "./Header";
 import "../assets/styles/components/app-container.scss";
-import InvoiceFormDrawer from "./invoiceFormDrawer";
+import InvoiceFormDrawer from "./InvoiceFormDrawer";
 import React, { useState } from "react";
-import InvoicesListPage from "../pages/invoicesListPage";
-import InvoiceDetailsPage from "../pages/invoiceDetailsPage";
+import InvoicesListPage from "../pages/InvoicesListPage";
+import InvoiceDetailsPage from "../pages/InvoiceDetailsPage";
 import { Route, Routes } from "react-router-dom";
 import { IInvoice } from "../interfaces/invoice.interface";
 

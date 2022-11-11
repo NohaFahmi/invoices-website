@@ -1,5 +1,5 @@
 import {Drawer, message} from "antd";
-import InvoiceForm from "./invoiceForm";
+import InvoiceForm from "./InvoiceForm";
 import "../assets/styles/components/invoice-form-drawer.scss";
 import { IInvoice } from "../interfaces/invoice.interface";
 import InvoicesService from "../services/invoices.service";
