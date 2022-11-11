@@ -1,4 +1,4 @@
-import {Button, message, Table} from "antd";
+import {Button, message, Spin, Table} from "antd";
 import "../utils/styles/components/invoice-details.scss";
 import type { ColumnsType } from "antd/es/table";
 import { GoPrimitiveDot } from "react-icons/go";
@@ -77,7 +77,6 @@ const InvoiceDetailsPage = ({
   const navigate = useNavigate();
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);
   const [openDialog, setOpenDialog] = useState(false);
-
   const onChangeInvoiceStatus = (status: number) => {
     if (invoice?._id) {
       InvoicesService.changeInvoicePaymentStatus(invoice._id, status)
@@ -123,16 +122,26 @@ const InvoiceDetailsPage = ({
       );
     });
   };
+  const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
     if (params.id) {
+      setIsLoading(true);
       InvoicesService.getInvoiceById(params.id)
           .then((invoice: IInvoice) => {
             dispatch({ type: actionTypes.GET_INVOICE_BY_ID, payload: invoice });
           })
-          .catch((err:any) => {});
+          .catch((err:any) => {
+            message.error("Something Wrong happened!", 1).then(() => {
+              navigate('/');
+            })
+          }).finally(() => {
+            setIsLoading(false);
+      })
         window.addEventListener('resize', () => {
           setScreenWidth(window.innerWidth);
         })
+    } else {
+      navigate('/');
     }
   }, []);
 
@@ -142,7 +151,7 @@ const InvoiceDetailsPage = ({
         <IoChevronBack />
         <span>Go Back</span>
       </Link>
-      {invoice && (
+      {invoice && !isLoading && (
         <>
           <div className="invoice-details-page_header">
             <div className="invoice-details-page_header_status-wrapper">
@@ -278,6 +287,7 @@ const InvoiceDetailsPage = ({
         />
         </>
       )}
+      {<Spin size={"large"} spinning={isLoading}/>}
     </div>
   );
 };

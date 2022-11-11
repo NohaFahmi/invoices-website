@@ -1,9 +1,9 @@
 import InvoiceCard from "../components/invoiceCard";
 import "../utils/styles/components/invoices-list-page.scss";
-import { Select, Button } from "antd";
+import {Select, Button, message, Spin} from "antd";
 import { AiOutlinePlus } from "react-icons/ai";
 import "../utils/styles/forms.scss";
-import { useEffect } from "react";
+import {useEffect, useState} from "react";
 import InvoicesService from "../services/invoices.service";
 import { useDispatch, useSelector } from "react-redux";
 import {IInvoice, IInvoiceState} from "../interfaces/invoice.interface";
@@ -22,16 +22,35 @@ const InvoicesListPage = ({
   onCreateNewInvoice: () => void;
 }) => {
   const invoicesList = useSelector((state: IInvoiceState) => state.invoices);
+  const [isLoading, setIsLoading] = useState(true);
   const dispatch = useDispatch();
-
+  const onFilteringInvoices = (value: any[]) => {
+      const status = value[0];
+      setIsLoading(true);
+      InvoicesService.filterInvoices(status).then((invoices: IInvoice[]) => {
+          dispatch({
+              type: actionTypes.FILTER_INVOICES,
+              payload: invoices
+          })
+      }).catch((err:any) => {
+          message.error("Something wrong happened!", 2);
+          console.log(err);
+      }).finally(() => {
+          setIsLoading(false);
+      })
+  }
   useEffect(() => {
+      setIsLoading(true);
       InvoicesService.getAllInvoices()
         .then((invoices:IInvoice[]) => {
           dispatch({ type: actionTypes.GET_INVOICES, payload: invoices });
         })
-        .catch((err:any) => {
-          console.log(err);
-        });
+        .catch((err:any) =>  {
+            message.error("Something wrong happened!", 1);
+            console.log(err);
+        }).finally(() => {
+            setIsLoading(false);
+      })
   }, []);
 
   return (
@@ -39,7 +58,7 @@ const InvoicesListPage = ({
       <div className="invoices-list-page_header">
         <div className="invoices-list-page_header-titles">
           <h1>Invoices</h1>
-          {invoicesList.length > 0 && (
+          {invoicesList.length > 0 && !isLoading && (
             <p>
               <span className="full-text">
                 There are {invoicesList.filter((item) => item.status == 2).length} pending invoices
@@ -55,18 +74,7 @@ const InvoicesListPage = ({
             bordered={false}
             showArrow={true}
             showSearch={false}
-            onChange={(value) => {
-              const status = value[0];
-              InvoicesService.filterInvoices(status).then((invoices: IInvoice[]) => {
-                dispatch({
-                    type: actionTypes.FILTER_INVOICES,
-                    payload: invoices
-                })
-              }).catch((err:any) => {
-                console.log(err);
-              })
-            }}
-          >
+            onChange={(value) => {onFilteringInvoices(value);}}>
             <Option value="1">Draft</Option>
             <Option value="2">Pending</Option>
             <Option value="3">Paid</Option>
@@ -76,8 +84,7 @@ const InvoicesListPage = ({
             type="primary"
             shape="round"
             className="btn-default with-icon"
-            onClick={onCreateNewInvoice}
-          >
+            onClick={onCreateNewInvoice}>
             <span>
               <AiOutlinePlus />
             </span>
@@ -87,10 +94,11 @@ const InvoicesListPage = ({
         </div>
       </div>
       <div className="invoices-list-page_list-container">
-        {invoicesList.map((invoice) => {
+          {!isLoading && invoicesList.map((invoice) => {
           return <InvoiceCard key={invoice?._id} invoice={invoice} />;
         })}
-          {invoicesList.length === 0 && <EmptyResult />}
+          {invoicesList.length === 0 && !isLoading && <EmptyResult />}
+          {<Spin size={"large"} spinning={isLoading}/>}
       </div>
     </div>
   );
