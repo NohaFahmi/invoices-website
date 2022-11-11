@@ -1,4 +1,4 @@
-import { Button, Form, Input, DatePicker, Select, Space } from "antd";
+import {Button, Form, Input, DatePicker, Select, Space, message} from "antd";
 import moment from "moment";
 import { MdDelete } from "react-icons/md";
 import { IInvoice } from "../interfaces/invoice.interface";
@@ -94,7 +94,7 @@ const InvoiceForm = ({
     if(invoice.items.length > 0) {
         isDraft ?onSavingDraft(invoice) : onSavingInvoice(invoice)
     } else {
-      alert('You have to enter at least 1 item to you invoice');
+      message.error('Your invoice should have at least 1 item!', 2);
     }
   }
   return (

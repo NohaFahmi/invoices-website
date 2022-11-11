@@ -1,4 +1,4 @@
-import { Button, Table } from "antd";
+import {Button, message, Table} from "antd";
 import "../utils/styles/components/invoice-details.scss";
 import type { ColumnsType } from "antd/es/table";
 import { GoPrimitiveDot } from "react-icons/go";
@@ -86,6 +86,7 @@ const InvoiceDetailsPage = ({
             type: actionTypes.CHANGE_INVOICE_STATUS,
             payload: result,
           });
+          message.success("The invoice's status has been changed successfully!", 3);
         })
         .catch((err:any) => {
           console.log(err);
@@ -102,7 +103,9 @@ const InvoiceDetailsPage = ({
                 id: invoice._id
               },
             });
-            navigate("/");
+            message.success('The invoice has been deleted successfully!', 2).then(() => {
+              navigate("/");
+            })
           })
           .catch((err:any) => {
             console.log(err);
