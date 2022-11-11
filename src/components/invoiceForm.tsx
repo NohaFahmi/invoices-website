@@ -17,8 +17,6 @@ const InvoiceForm = ({
 }) => {
   const [form] = Form.useForm();
   const dateFormat = "YYYY/MM/DD";
-  const isFormInValid = () => !form.isFieldsTouched(true) ||
-      form.getFieldsError().filter(({ errors }) => errors.length).length > 0
   const [disabled, setDisabled] = useState(true);
   let invoiceValues = {
     stAddress: invoice?.senderAddress.split("-")[0] || "",
@@ -49,28 +47,62 @@ const InvoiceForm = ({
   const getTotalPriceForItem = (qty: number, price: number): number => {
     return qty * price;
   };
-  const onFormSubmit = useCallback(async () => {
+  const onFormValidation = useCallback(async () => {
     form
         .validateFields()
         .then(() => {
           if(form.getFieldValue('items') == undefined) {
             setDisabled(true)
+            console.log("HERE")
           }
           setDisabled(false);
         })
         .catch((errors) => {
+          console.log(errors)
           setDisabled(true)
         });
   }, [form]);
-  useEffect(() => {
-    setDisabled(isFormInValid());
-  }, [isFormInValid()])
+  const onSubmitInvoice = (isDraft?: boolean) => {
+    let invoice = {
+      billingClient: {
+        clientAddress:
+            invoiceValues.clientStAddress +
+            "-" +
+            invoiceValues.clientCity +
+            "-" +
+            invoiceValues.clientPostCode +
+            "-" +
+            invoiceValues.clientCountry,
+        clientEmail: invoiceValues.clientEmail,
+        clientName: invoiceValues.clientName,
+      },
+      description: invoiceValues.description,
+      invoiceDate: moment(invoiceValues.invoiceDate, dateFormat)
+          .toDate().toISOString(),
+      items: [...invoiceValues.items],
+      paymentTerms: Number(invoiceValues.paymentTerms),
+      senderAddress:
+          invoiceValues.stAddress +
+          "-" +
+          invoiceValues.city +
+          "-" +
+          invoiceValues.postCode +
+          "-" +
+          invoiceValues.country,
+      status: isDraft ? 1 : 2,
+    };
+    if(invoice.items.length > 0) {
+        isDraft ?onSavingDraft(invoice) : onSavingInvoice(invoice)
+    } else {
+      alert('You have to enter at least 1 item to you invoice');
+    }
+  }
   return (
    <>
      <Form
          layout="vertical"
          form={form}
-         initialValues={invoice ? invoiceValues : {}}
+         initialValues={invoiceValues}
          onValuesChange={async (changedVal, val) => {
            invoiceValues = val;
            if (changedVal["items"]) {
@@ -83,8 +115,8 @@ const InvoiceForm = ({
              form.setFieldsValue("items");
            }
          }}
-         onChange={() => {
-           onFormSubmit();
+         onChange={(changedVal, ) => {
+           onFormValidation();
          }}
      >
        <h1 className="form-title">Bill From</h1>
@@ -233,7 +265,9 @@ const InvoiceForm = ({
                          <Input placeholder="Total" disabled />
                        </Form.Item>
                        <MdDelete
-                           onClick={() => remove(name)}
+                           onClick={() => {
+                             remove(name);
+                           }}
                            size="40px"
                            className="delete-icon"
                        />
@@ -268,41 +302,9 @@ const InvoiceForm = ({
                <Button
                    className="btn-dark"
                    onClick={() => {
-                     let invoice: IInvoice = {
-                       billingClient: {
-                         clientAddress:
-                             invoiceValues.clientStAddress +
-                             "-" +
-                             invoiceValues.clientCity +
-                             "-" +
-                             invoiceValues.clientPostCode +
-                             "-" +
-                             invoiceValues.clientCountry,
-                         clientEmail: invoiceValues.clientEmail,
-                         clientName: invoiceValues.clientName,
-                       },
-                       description: invoiceValues.description,
-                       invoiceDate: moment(invoiceValues.invoiceDate, dateFormat)
-                           ?.toDate()
-                           ?.toISOString(),
-                       items: invoiceValues.items,
-                       paymentTerms: Number(invoiceValues.paymentTerms),
-                       senderAddress:
-                           invoiceValues.stAddress +
-                           "-" +
-                           invoiceValues.city +
-                           "-" +
-                           invoiceValues.postCode +
-                           "-" +
-                           invoiceValues.country,
-                       status: 1,
-                     };
-                     if(!isFormInValid() && invoiceValues.items.length > 0) {
-                       onSavingDraft(invoice);
-                     }
+                     onSubmitInvoice(true);
                    }}
-                   disabled={disabled}
-               >
+                   disabled={disabled}>
                  Save as Draft
                </Button>
            )}
@@ -310,37 +312,7 @@ const InvoiceForm = ({
                className="btn-default"
                disabled={disabled}
                onClick={() => {
-                 let invoice = {
-                   billingClient: {
-                     clientAddress:
-                         invoiceValues.clientStAddress +
-                         "-" +
-                         invoiceValues.clientCity +
-                         "-" +
-                         invoiceValues.clientPostCode +
-                         "-" +
-                         invoiceValues.clientCountry,
-                     clientEmail: invoiceValues.clientEmail,
-                     clientName: invoiceValues.clientName,
-                   },
-                   description: invoiceValues.description,
-                   invoiceDate: moment(invoiceValues.invoiceDate, dateFormat)
-                       .toDate().toISOString(),
-                   items: [...invoiceValues.items],
-                   paymentTerms: Number(invoiceValues.paymentTerms),
-                   senderAddress:
-                       invoiceValues.stAddress +
-                       "-" +
-                       invoiceValues.city +
-                       "-" +
-                       invoiceValues.postCode +
-                       "-" +
-                       invoiceValues.country,
-                   status: 2,
-                 };
-                 if(!isFormInValid() && invoice.items.length > 0) {
-                   onSavingInvoice(invoice);
-                 }
+                 onSubmitInvoice()
                }}
            >
              Save & Send
