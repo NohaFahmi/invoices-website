@@ -1,5 +1,5 @@
 import { IoIosArrowForward } from "react-icons/io";
-import "../utils/styles/components/invoice-card.scss";
+import "../assets/styles/components/invoice-card.scss";
 import { GoPrimitiveDot } from "react-icons/go";
 import { IInvoice } from "../interfaces/invoice.interface";
 import { useNavigate } from "react-router-dom";

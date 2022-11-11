@@ -1,6 +1,5 @@
-import { useState } from "react";
 import { Modal, Button } from "antd";
-import "../utils/styles/components/confirmation-modal.scss";
+import "../assets/styles/components/confirmation-modal.scss";
 const ConfirmationModal = ({
   showModal,
   title,

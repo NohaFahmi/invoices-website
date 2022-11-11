@@ -1,5 +1,5 @@
 import {Button, message, Spin, Table} from "antd";
-import "../utils/styles/components/invoice-details.scss";
+import "../assets/styles/components/invoice-details.scss";
 import type { ColumnsType } from "antd/es/table";
 import { GoPrimitiveDot } from "react-icons/go";
 import { IoChevronBack } from "react-icons/io5";
@@ -114,7 +114,7 @@ const InvoiceDetailsPage = ({
     }
   }
   const renderAddress = (address: string) => {
-    return address.split("-").map((item, index) => {
+    return address.split("-").map((item) => {
       return (
         <span key={`add-${Math.random()}`}>
           {item} <br />

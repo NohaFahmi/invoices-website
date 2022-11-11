@@ -1,8 +1,8 @@
 import InvoiceCard from "../components/invoiceCard";
-import "../utils/styles/components/invoices-list-page.scss";
+import "../assets/styles/components/invoices-list-page.scss";
 import {Select, Button, message, Spin} from "antd";
 import { AiOutlinePlus } from "react-icons/ai";
-import "../utils/styles/forms.scss";
+import "../assets/styles/generic/forms.scss";
 import {useEffect, useState} from "react";
 import InvoicesService from "../services/invoices.service";
 import { useDispatch, useSelector } from "react-redux";
@@ -33,7 +33,7 @@ const InvoicesListPage = ({
               payload: invoices
           })
       }).catch((err:any) => {
-          message.error("Something wrong happened!", 2);
+          message.error("Something wrong happened!", 2).then(()=> {})
           console.log(err);
       }).finally(() => {
           setIsLoading(false);
@@ -46,7 +46,7 @@ const InvoicesListPage = ({
           dispatch({ type: actionTypes.GET_INVOICES, payload: invoices });
         })
         .catch((err:any) =>  {
-            message.error("Something wrong happened!", 1);
+            message.error("Something wrong happened!", 1).then(() => {})
             console.log(err);
         }).finally(() => {
             setIsLoading(false);

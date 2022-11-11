@@ -1,6 +1,6 @@
 import { Layout } from "antd";
 import Header from "./header";
-import "../utils/styles/components/app-container.scss";
+import "../assets/styles/components/app-container.scss";
 import InvoiceFormDrawer from "./invoiceFormDrawer";
 import React, { useState } from "react";
 import InvoicesListPage from "../pages/invoicesListPage";

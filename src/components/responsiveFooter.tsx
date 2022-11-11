@@ -1,5 +1,5 @@
 import {Button} from "antd";
-import '../utils/styles/components/responsive-footer.scss';
+import '../assets/styles/components/responsive-footer.scss';
 
 const ResponsiveFooter = (
     {onEditInvoice,

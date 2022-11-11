@@ -1,4 +1,4 @@
-import "../utils/styles/components/empty-result.scss";
+import "../assets/styles/components/empty-result.scss";
 
 const EmptyResult = () => {
   return (

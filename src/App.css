@@ -1,5 +1,5 @@
 @import "~antd/dist/antd.css";
 @import "./assets/theme.scss";
-@import "./utils/fonts.scss";
-@import "./utils/styles/button.scss";
-@import "./utils/styles/forms.scss";
+@import "./assets/fonts.scss";
+@import "assets/styles/generic/button.scss";
+@import "assets/styles/generic/forms.scss";
